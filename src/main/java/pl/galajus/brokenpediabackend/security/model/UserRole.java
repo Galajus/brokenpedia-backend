@@ -3,7 +3,7 @@ package pl.galajus.brokenpediabackend.security.model;
 public enum UserRole {
     ROLE_ADMIN("ADMIN"),
     ROLE_MODERATOR("MODERATOR"),
-    ROLE_CUSTOMER("USER");
+    ROLE_USER("USER");
 
     private final String role;
 

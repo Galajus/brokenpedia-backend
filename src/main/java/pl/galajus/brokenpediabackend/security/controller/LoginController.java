@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import pl.galajus.brokenpediabackend.common.model.BooleanResponse;
 import pl.galajus.brokenpediabackend.security.model.LoginCredentials;
 import pl.galajus.brokenpediabackend.security.model.PediaUserDetails;
 import pl.galajus.brokenpediabackend.security.model.RegisterCredentials;
@@ -31,6 +32,7 @@ import java.util.List;
 public class LoginController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
+    private final PasswordService passwordService;
     @Value("${jwt.expirationTime}")
     private Long expirationTime;
     @Value("${jwt.secret}")
@@ -42,35 +44,36 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public Token register(@RequestBody @Valid RegisterCredentials registerCredentials) {
+    public BooleanResponse register(@RequestBody @Valid RegisterCredentials registerCredentials) {
         if (!registerCredentials.getPassword().equals(registerCredentials.getRepeatPassword())) {
             throw new IllegalArgumentException("Passwords not identical");
         }
         if (userService.userExist(registerCredentials.getUsername())) {
             throw new IllegalArgumentException("User exist");
         }
-        userService.createUser(buildUser(registerCredentials));
+        User user = userService.createUser(buildUser(registerCredentials));
+        passwordService.sendAccountConfirmationLink(user);
 
-        return authenticate(registerCredentials.getUsername(), registerCredentials.getPassword());
+        return new BooleanResponse(true);
     }
 
     @PostMapping("/confirmAccount")
-    public Boolean confirmAccount(@RequestBody ConfirmAccount confirmAccount) {
+    public BooleanResponse confirmAccount(@RequestBody ConfirmAccount confirmAccount) {
         User user = userService.getByConfirmAccountHash(confirmAccount.getHash());
         if (user.isEnabled()) {
-            return false;
+            return new BooleanResponse(false);
         }
         user.setEnabled(true);
         userService.updateUser(user);
-        return true;
+        return new BooleanResponse(true);
     }
 
     private User buildUser(RegisterCredentials registerCredentials) {
         User user = User.builder()
                 .username(registerCredentials.getUsername())
                 .password("{bcrypt}" + new BCryptPasswordEncoder().encode(registerCredentials.getPassword()))
-                .enabled(true)
-                .authorities(List.of(UserRole.ROLE_CUSTOMER))
+                .enabled(false)
+                .authorities(List.of(UserRole.ROLE_USER))
                 .build();
         user.setConfirmAccountHash(PasswordService.generateHash(user));
         return user;

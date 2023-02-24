@@ -31,7 +31,7 @@ public class UserService {
         return userRepository.findByConfirmAccountHash(hash).orElseThrow();
     }
     public User getByLostPasswordHash(String hash) {
-        return userRepository.findByConfirmAccountHash(hash).orElseThrow();
+        return userRepository.findByLostPasswordHash(hash).orElseThrow();
     }
 
     public boolean userExist(String username) {

@@ -21,21 +21,20 @@ public class PediaUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.getByUserName(username);
-        PediaUserDetails pediaUserDetails = createPediaUserDetails(user);
-        return pediaUserDetails;
+        return createPediaUserDetails(user);
     }
 
     @Transactional
     public UserDetails loadUserByUuid(String uuid) throws UsernameNotFoundException {
         User user = userService.getByUuid(uuid);
-        PediaUserDetails pediaUserDetails = createPediaUserDetails(user);
-        return pediaUserDetails;
+        return createPediaUserDetails(user);
     }
 
     private PediaUserDetails createPediaUserDetails(User user) {
         PediaUserDetails pediaUserDetails = new PediaUserDetails(
                 user.getUsername(),
                 user.getPassword(),
+                user.isEnabled(),
                 user.getAuthorities().stream()
                         .map(userRole -> (GrantedAuthority) userRole::name)
                         .toList()

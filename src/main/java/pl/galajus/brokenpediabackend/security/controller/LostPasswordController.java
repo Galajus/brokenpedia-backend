@@ -1,5 +1,6 @@
 package pl.galajus.brokenpediabackend.security.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +21,7 @@ public class LostPasswordController {
     }
 
     @PostMapping("/changePassword")
-    public void changePassword(@RequestBody ChangePassword changePassword) {
+    public void changePassword(@RequestBody @Valid ChangePassword changePassword) {
         passwordService.changePassword(changePassword);
     }
 
