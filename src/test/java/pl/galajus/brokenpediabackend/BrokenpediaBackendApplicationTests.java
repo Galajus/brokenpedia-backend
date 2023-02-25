@@ -9,5 +9,4 @@ class BrokenpediaBackendApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
