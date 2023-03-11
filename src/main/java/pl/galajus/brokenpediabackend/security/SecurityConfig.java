@@ -27,7 +27,7 @@ public class SecurityConfig {
                                            UserDetailsService userDetailsService) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/admin/**").hasRole(UserRole.ROLE_ADMIN.getRole())
-                .requestMatchers(HttpMethod.GET, "/profile").authenticated()
+                .requestMatchers(HttpMethod.GET, "/profile/**").authenticated()
                 .anyRequest().permitAll());
 
         http.csrf().disable();
