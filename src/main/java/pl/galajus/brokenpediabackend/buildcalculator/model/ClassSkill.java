@@ -6,17 +6,17 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.galajus.brokenpediabackend.common.model.Profession;
+
+import java.util.List;
 
 @Entity
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Setter
 public class ClassSkill {
 
     @Id
@@ -30,4 +30,7 @@ public class ClassSkill {
     private String image;
     @Enumerated(value = EnumType.STRING)
     private Profession profession;
+    @OneToMany
+    @JoinColumn(name = "classSkillId")
+    List<SkillBasic> skillBasics;
 }

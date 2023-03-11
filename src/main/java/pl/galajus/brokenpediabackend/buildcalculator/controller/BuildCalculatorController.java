@@ -21,7 +21,7 @@ public class BuildCalculatorController {
     @GetMapping("/initData")
     public InitBuildCalculator getInitData() {
         return InitBuildCalculator.builder()
-                .classSkills(classSkillService.getAll())
+                .classSkills(classSkillService.getAllWithBasicsAndEffects())
                 .defaultStatistics(defaultStatisticService.getAll())
                 .skillCosts(skillCostService.getAll())
                 .build();
