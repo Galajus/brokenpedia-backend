@@ -84,9 +84,11 @@ public class LoginController {
                 new UsernamePasswordAuthenticationToken(username, password)
         );
         PediaUserDetails principal = (PediaUserDetails) authenticate.getPrincipal();
+        List<String> authorities = getAuthoritiesToJwt(principal);
         String token = JWT.create()
                 .withSubject(principal.getUuid().toString())
                 .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
+                .withArrayClaim("var", authorities.toArray(new String[0]))
                 .sign(Algorithm.HMAC256(secret));
 
         return new Token(
@@ -94,6 +96,19 @@ public class LoginController {
                 hasPermission(principal, UserRole.ROLE_ADMIN),
                 hasPermission(principal, UserRole.ROLE_MODERATOR)
         );
+    }
+
+    private static List<String> getAuthoritiesToJwt(PediaUserDetails principal) {
+        return principal.getAuthorities().stream()
+                .map(role -> {
+                    if (role.getAuthority().equals("ROLE_ADMIN")) {
+                        return "a";
+                    }
+                    if (role.getAuthority().equals("ROLE_MODERATOR")) {
+                        return "b";
+                    }
+                    return "c";
+                }).toList();
     }
 
     private boolean hasPermission(PediaUserDetails principal, UserRole role) {
