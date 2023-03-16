@@ -2,6 +2,7 @@ package pl.galajus.brokenpediabackend.buildcalculator.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.galajus.brokenpediabackend.buildcalculator.model.ClassSkill;
 import pl.galajus.brokenpediabackend.buildcalculator.model.SkillBasic;
 import pl.galajus.brokenpediabackend.buildcalculator.model.SkillCustomEffect;
@@ -23,6 +24,11 @@ public class ClassSkillService {
     private final SkillPsychoEffectRepository skillPsychoEffectRepository;
     private final SkillCustomEffectRepository skillCustomEffectRepository;
 
+    @Transactional
+    public ClassSkill save(ClassSkill classSkill) {
+        return classSkillRepository.save(classSkill);
+    }
+
     public List<ClassSkill> getAll() {
         return classSkillRepository.findAll();
     }
@@ -36,9 +42,29 @@ public class ClassSkillService {
         return mapClassSkills(classSkills, skillBasics, psychoEffects, customEffects);
     }
 
+    public ClassSkill getWithBasicsAndEffects(Long id) {
+        ClassSkill classSkill = classSkillRepository.findById(id).orElseThrow();
+        List<SkillBasic> skillBasics = skillBasicRepository.findAllByClassSkillId(classSkill.getId());
+
+        List<Long> basicIds = skillBasics.stream().map(SkillBasic::getId).toList();
+
+        List<SkillPsychoEffect> skillPsychoEffects = skillPsychoEffectRepository.findAllBySkillBasicIdIn(basicIds);
+        List<SkillCustomEffect> skillCustomEffects = skillCustomEffectRepository.findAllBySkillBasicIdIn(basicIds);
+
+        return mapClassSkill(classSkill, skillBasics, skillPsychoEffects, skillCustomEffects);
+    }
+
+    private ClassSkill mapClassSkill(ClassSkill classSkill, List<SkillBasic> skillBasics,
+                                     List<SkillPsychoEffect> psychoEffects, List<SkillCustomEffect> customEffects) {
+        mapPsychoEffects(skillBasics, psychoEffects);
+        mapCustomEffects(skillBasics, customEffects);
+        mapBasic(classSkill, skillBasics);
+
+        return classSkill;
+    }
+
     private List<ClassSkill> mapClassSkills(List<ClassSkill> classSkills, List<SkillBasic> skillBasics,
                                             List<SkillPsychoEffect> psychoEffects, List<SkillCustomEffect> customEffects) {
-
         mapPsychoEffects(skillBasics, psychoEffects);
         mapCustomEffects(skillBasics, customEffects);
         mapBasics(classSkills, skillBasics);
@@ -71,6 +97,14 @@ public class ClassSkillService {
                     .toList();
             classSkill.setSkillBasics(basics);
         });
+    }
+
+    private void mapBasic(ClassSkill classSkill, List<SkillBasic> skillBasics) {
+        List<SkillBasic> basics = skillBasics.stream()
+                .filter(skillBasic -> Objects.equals(classSkill.getId(), skillBasic.getClassSkillId()))
+                .toList();
+        classSkill.setSkillBasics(basics);
+
     }
 
 }

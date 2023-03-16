@@ -3,7 +3,7 @@
 create table skill_basic(
                            id bigint not null auto_increment PRIMARY KEY,
                            class_skill_id bigint not null,
-                           skill_level int not null,
+                           skill_level int,
                            damage int,
                            hit_chance int,
                            mana_cost int,
