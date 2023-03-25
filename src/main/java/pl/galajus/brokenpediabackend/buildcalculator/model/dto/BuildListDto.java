@@ -17,5 +17,6 @@ public class BuildListDto {
     private Boolean pvpBuild;
     private Profession profession;
     private Integer level;
+    private Long likes;
 
 }

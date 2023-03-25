@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import pl.galajus.brokenpediabackend.buildcalculator.model.BuildLiker;
 import pl.galajus.brokenpediabackend.buildcalculator.repository.BuildLikerRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BuildLikerService {
@@ -17,6 +19,10 @@ public class BuildLikerService {
             throw new RuntimeException("LIKE EXIST");
         });
         return buildLikerRepository.save(buildLiker);
+    }
+
+    public List<BuildLiker> findByBuildsIds(List<Long> ids) {
+        return buildLikerRepository.findByBuildIdIn(ids);
     }
 
 }
