@@ -49,7 +49,7 @@ public class BuildCalculatorController {
     @GetMapping("/profile/builds/{id}")
     public Build getBuildById(@PathVariable Long id, Principal principal) {
         Build build = buildService.getBuildById(id);
-        if (build.getHidden() && !build.getOwnerUuid().toString().equals(principal.getName())) {
+        if (build.getHidden() && !build.getProfile().getUuid().toString().equals(principal.getName())) {
             throw new RuntimeException("HIDDEN BUILD ACCESS DENIED");
         }
         return build;
@@ -64,22 +64,27 @@ public class BuildCalculatorController {
         return build;
     }
 
-    @PutMapping("/profile/builds/add-liker")
-    public BuildLiker addLiker(@RequestBody BuildLiker liker) {
-        return buildLikerService.addLike(liker);
-    }
-
-    @PostMapping("/profile/builds/save")
-    public Build saveBuild(@RequestBody @Valid Build build) {
-        if (buildValidationService.isValid(build)) {
-            return buildService.save(build);
+    @PostMapping("/profile/builds")
+    public Build createBuild(@RequestBody @Valid Build build, Principal principal) {
+        if (buildValidationService.isInValid(build)) {
+            throw new RuntimeException("INVALID BUILD");
         }
-
-        throw new RuntimeException("INVALID BUILD");
+        if (buildService.getAmountOfBuilds(principal.getName()) > 200) {
+            throw new RuntimeException("MAX BUILDS REACHED");
+        }
+        return buildService.save(build);
     }
 
-    @DeleteMapping("/profile/builds/delete/{id}")
-    public void deleteBuild(@PathVariable Long id) {
+    @PutMapping("/profile/builds")
+    public Build updateBuild(@RequestBody @Valid Build build) {
+        if (buildValidationService.isInValid(build)) {
+            throw new RuntimeException("INVALID BUILD");
+        }
+        return buildService.save(build);
+    }
+
+    @DeleteMapping("/profile/builds/{id}")
+    public void deleteBuild(@PathVariable Long id) { //TODO AUTHOR CHECK?
         buildService.deleteBuildById(id);
     }
 
@@ -107,5 +112,11 @@ public class BuildCalculatorController {
             @RequestParam Boolean pvp,
             @RequestParam(required = false, defaultValue = "0") Long page) {
         return buildService.getBuildsByIsPvp(pvp, page);
+    }
+
+    //TODO REFACTOR
+    @PutMapping("/profile/builds/add-liker")
+    public BuildLiker addLiker(@RequestBody BuildLiker liker) {
+        return buildLikerService.addLike(liker);
     }
 }

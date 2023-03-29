@@ -44,6 +44,10 @@ public class BuildService {
         return buildRepository.findByIdWithJoins(id).orElseThrow();
     }
 
+    public Long getAmountOfBuilds(String uuid) {
+        return buildRepository.countByProfileUuid(UUID.fromString(uuid));
+    }
+
     @Transactional(readOnly = true)
     public PageableBuildListDto getBuildsByProfession(Profession profession, Long page) {
         PageRequest pageable = PageRequest.of(Math.toIntExact(page), 25, Sort.by(Sort.Direction.DESC, "buildDetails.level"));

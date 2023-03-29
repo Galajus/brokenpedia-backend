@@ -1,19 +1,15 @@
-package pl.galajus.brokenpediabackend.security.model;
+package pl.galajus.brokenpediabackend.profile.model.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 @Getter
-public class RegisterCredentials {
-    @Email
-    private String username;
-    @NotBlank
-    private String password;
-    @NotBlank
-    private String repeatPassword;
+@ToString
+public class ProfileNicknameDto {
+
     @NotBlank
     @Length(min = 5,  max = 18)
     @Pattern(regexp = "^[a-zA-Z]\\w*$")

@@ -12,6 +12,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByUuid(UUID uuid);
     Optional<User> findByConfirmAccountHash(String hash);
     Optional<User> findByLostPasswordHash(String hash);
-
     boolean existsByUsername(String username);
+    boolean existsByNickname(String nickname);
+
+
 }

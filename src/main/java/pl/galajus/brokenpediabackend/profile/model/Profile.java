@@ -26,6 +26,7 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
     private String username;
+    private String nickname;
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "username", referencedColumnName = "username"))
     @Column(name = "authority")

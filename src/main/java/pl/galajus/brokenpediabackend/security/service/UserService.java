@@ -41,4 +41,8 @@ public class UserService {
     public User updateUser(User user) {
         return userRepository.save(user);
     }
+
+    public boolean nicknameExist(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
 }

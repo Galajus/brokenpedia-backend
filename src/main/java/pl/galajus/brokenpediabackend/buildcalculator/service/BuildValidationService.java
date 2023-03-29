@@ -20,7 +20,7 @@ public class BuildValidationService {
     private final SkillCostService skillCostService;
     private final ClassSkillService classSkillService;
 
-    public boolean isValid(Build build) {
+    public boolean isInValid(Build build) {
         Integer level = build.getBuildDetails().getLevel();
 
         List<BuildSkillStatData> stats = build.getBuildDetails().getSkillStatData().stream()
@@ -60,7 +60,7 @@ public class BuildValidationService {
             throw new RuntimeException("SPENT SKILL POINTS IS INVALID");
         }
 
-        return true;
+        return false;
     }
 
     private boolean spentStatsIsInvalid(int level, List<BuildSkillStatData> stats) {

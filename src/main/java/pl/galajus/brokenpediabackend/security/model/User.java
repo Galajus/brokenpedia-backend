@@ -35,6 +35,7 @@ public class User implements Serializable {
     private UUID uuid;
     private String username;
     private String password;
+    private String nickname;
     private boolean enabled;
     @ElementCollection
     @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "username", referencedColumnName = "username"))

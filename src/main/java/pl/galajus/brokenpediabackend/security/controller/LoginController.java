@@ -51,6 +51,9 @@ public class LoginController {
         if (userService.userExist(registerCredentials.getUsername())) {
             throw new IllegalArgumentException("User exist");
         }
+        if (userService.nicknameExist(registerCredentials.getNickname())) {
+            throw new IllegalArgumentException("Nickname exist");
+        }
         User user = userService.createUser(buildUser(registerCredentials));
         passwordService.sendAccountConfirmationLink(user);
 
@@ -72,6 +75,7 @@ public class LoginController {
         User user = User.builder()
                 .username(registerCredentials.getUsername())
                 .password("{bcrypt}" + new BCryptPasswordEncoder().encode(registerCredentials.getPassword()))
+                .nickname(registerCredentials.getNickname())
                 .enabled(false)
                 .authorities(List.of(UserRole.ROLE_USER))
                 .build();

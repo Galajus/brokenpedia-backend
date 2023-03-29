@@ -32,6 +32,7 @@ public class BuildDtoMapper {
                         .hidden(build.getHidden())
                         .profession(build.getBuildDetails().getProfession())
                         .level(build.getBuildDetails().getLevel())
+                        .buildAuthor(build.getProfile().getNickname())
                         .likes(likers.stream()
                                 .filter(liker -> Objects.equals(liker.getBuildId(), build.getId()))
                                 .count())
