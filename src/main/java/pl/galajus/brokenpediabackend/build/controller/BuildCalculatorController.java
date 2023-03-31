@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.galajus.brokenpediabackend.build.exception.BuildValidationException;
 import pl.galajus.brokenpediabackend.build.model.Build;
 import pl.galajus.brokenpediabackend.build.model.BuildLiker;
 import pl.galajus.brokenpediabackend.build.model.dto.BuildListDto;
@@ -50,7 +51,7 @@ public class BuildCalculatorController {
     public Build getBuildById(@PathVariable Long id, Principal principal) {
         Build build = buildService.getBuildById(id);
         if (build.getHidden() && !build.getProfile().getUuid().toString().equals(principal.getName())) {
-            throw new RuntimeException("HIDDEN BUILD ACCESS DENIED");
+            throw new BuildValidationException("HIDDEN BUILD ACCESS DENIED");
         }
         return build;
     }
@@ -59,7 +60,7 @@ public class BuildCalculatorController {
     public Build getBuildByIdWithoutAccount(@PathVariable Long id) {
         Build build = buildService.getBuildById(id);
         if (build.getHidden()) {
-            throw new RuntimeException("HIDDEN BUILD ACCESS DENIED");
+            throw new BuildValidationException("HIDDEN BUILD ACCESS DENIED");
         }
         return build;
     }
@@ -67,10 +68,10 @@ public class BuildCalculatorController {
     @PostMapping("/profile/builds")
     public Build createBuild(@RequestBody @Valid Build build, Principal principal) {
         if (buildValidationService.isInValid(build)) {
-            throw new RuntimeException("INVALID BUILD");
+            throw new BuildValidationException("INVALID BUILD");
         }
         if (buildService.getAmountOfBuilds(principal.getName()) > 200) {
-            throw new RuntimeException("MAX BUILDS REACHED");
+            throw new BuildValidationException("MAX BUILDS REACHED");
         }
         return buildService.save(build);
     }
@@ -78,7 +79,7 @@ public class BuildCalculatorController {
     @PutMapping("/profile/builds")
     public Build updateBuild(@RequestBody @Valid Build build) {
         if (buildValidationService.isInValid(build)) {
-            throw new RuntimeException("INVALID BUILD");
+            throw new BuildValidationException("INVALID BUILD");
         }
         return buildService.save(build);
     }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.galajus.brokenpediabackend.common.model.BooleanResponse;
+import pl.galajus.brokenpediabackend.security.exception.RegisterException;
 import pl.galajus.brokenpediabackend.security.model.LoginCredentials;
 import pl.galajus.brokenpediabackend.security.model.PediaUserDetails;
 import pl.galajus.brokenpediabackend.security.model.RegisterCredentials;
@@ -46,13 +47,13 @@ public class LoginController {
     @PostMapping("/register")
     public BooleanResponse register(@RequestBody @Valid RegisterCredentials registerCredentials) {
         if (!registerCredentials.getPassword().equals(registerCredentials.getRepeatPassword())) {
-            throw new IllegalArgumentException("Passwords not identical");
+            throw new RegisterException("Passwords not identical");
         }
         if (userService.userExist(registerCredentials.getUsername())) {
-            throw new IllegalArgumentException("User exist");
+            throw new RegisterException("User exist");
         }
         if (userService.nicknameExist(registerCredentials.getNickname())) {
-            throw new IllegalArgumentException("Nickname exist");
+            throw new RegisterException("Nickname exist");
         }
         User user = userService.createUser(buildUser(registerCredentials));
         passwordService.sendAccountConfirmationLink(user);

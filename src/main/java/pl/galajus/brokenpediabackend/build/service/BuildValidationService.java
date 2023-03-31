@@ -2,6 +2,7 @@ package pl.galajus.brokenpediabackend.build.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.galajus.brokenpediabackend.build.exception.BuildValidationException;
 import pl.galajus.brokenpediabackend.build.model.Build;
 import pl.galajus.brokenpediabackend.build.model.BuildSkillStatData;
 import pl.galajus.brokenpediabackend.skill.model.ClassSkill;
@@ -56,10 +57,10 @@ public class BuildValidationService {
                 .toList();
 
         if (spentStatsIsInvalid(level, stats)) {
-            throw new RuntimeException("SPENT STAT POINTS IS INVALID");
+            throw new BuildValidationException("SPENT STAT POINTS ARE INVALID");
         }
         if (spentSkillPointsIsInvalid(level, classSkills, basicsSkills)) {
-            throw new RuntimeException("SPENT SKILL POINTS IS INVALID");
+            throw new BuildValidationException("SPENT SKILL POINTS ARE INVALID");
         }
 
         return false;

@@ -2,6 +2,7 @@ package pl.galajus.brokenpediabackend.build.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.galajus.brokenpediabackend.build.exception.BuildValidationException;
 import pl.galajus.brokenpediabackend.build.model.BuildLiker;
 import pl.galajus.brokenpediabackend.build.repository.BuildLikerRepository;
 
@@ -16,7 +17,7 @@ public class BuildLikerService {
     public BuildLiker addLike(BuildLiker buildLiker) {
         buildLikerRepository.findByBuildIdAndLikerUuid(buildLiker.getBuildId(), buildLiker.getLikerUuid())
                 .ifPresent(like -> {
-            throw new RuntimeException("LIKE EXIST");
+            throw new BuildValidationException("LIKE EXIST");
         });
         return buildLikerRepository.save(buildLiker);
     }

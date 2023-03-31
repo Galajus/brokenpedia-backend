@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.galajus.brokenpediabackend.common.mail.EmailClientService;
+import pl.galajus.brokenpediabackend.security.exception.RegisterException;
 import pl.galajus.brokenpediabackend.security.model.User;
 import pl.galajus.brokenpediabackend.security.model.dto.ChangePassword;
 import pl.galajus.brokenpediabackend.security.model.dto.EmailObject;
@@ -49,7 +50,7 @@ public class PasswordService {
     public void changePassword(ChangePassword changePassword) {
         if (!Objects.equals(changePassword.getPassword(),
                 changePassword.getRepeatPassword())) {
-            throw new RuntimeException("Hasła nie są takie same");
+            throw new RegisterException("Hasła nie są takie same");
         }
         User user = userService.getByLostPasswordHash(changePassword.getHash());
         if (user.getLostPasswordHashDate().plusMinutes(10).isAfter(LocalDateTime.now())) {
@@ -57,7 +58,7 @@ public class PasswordService {
             user.setLostPasswordHash(null);
             user.setLostPasswordHashDate(null);
         } else {
-            throw new RuntimeException("Link stracił ważność");
+            throw new RegisterException("Link stracił ważność");
         }
     }
 
