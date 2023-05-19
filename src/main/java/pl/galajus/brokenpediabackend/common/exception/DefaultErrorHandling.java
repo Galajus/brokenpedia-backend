@@ -1,5 +1,6 @@
 package pl.galajus.brokenpediabackend.common.exception;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,19 @@ public class DefaultErrorHandling {
                         new Date(),
                         HttpStatus.NOT_FOUND.value(),
                         HttpStatus.NOT_FOUND.getReasonPhrase(),
+                        e.getMessage(),
+                        request.getRequestURI()
+                ));
+    }
+
+    @ExceptionHandler({TokenExpiredException.class})
+    @ResponseBody
+    public ResponseEntity<?> handleTokenExpiredException(TokenExpiredException e, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new DefaultErrorDto(
+                        new Date(),
+                        HttpStatus.UNAUTHORIZED.value(),
+                        HttpStatus.UNAUTHORIZED.getReasonPhrase(),
                         e.getMessage(),
                         request.getRequestURI()
                 ));
