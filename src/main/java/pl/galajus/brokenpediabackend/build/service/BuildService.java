@@ -53,7 +53,7 @@ public class BuildService {
 
     @Transactional(readOnly = true)
     public PageableBuildListDto getBuildsByProfession(Profession profession, Long page) {
-        PageRequest pageable = PageRequest.of(Math.toIntExact(page), 25, Sort.by(Sort.Direction.DESC, "buildDetails.level"));
+        PageRequest pageable = PageRequest.of(Math.toIntExact(page), PAGE_SIZE, Sort.by(Sort.Direction.DESC, "buildDetails.level"));
         Page<Build> builds = buildRepository.findByBuildDetailsProfession(profession, pageable);
         List<BuildLiker> likers = getLikers(builds.getContent());
         List<BuildListDto> buildListDtos = mapToBuildListDtoWithLikers(builds.getContent(), likers);
@@ -62,7 +62,7 @@ public class BuildService {
 
     @Transactional(readOnly = true)
     public PageableBuildListDto getBuildsByLevels(Integer less, Integer greater, Long page) {
-        PageRequest pageable = PageRequest.of(Math.toIntExact(page), 25, Sort.by(Sort.Direction.DESC, "buildDetails.level"));
+        PageRequest pageable = PageRequest.of(Math.toIntExact(page), PAGE_SIZE, Sort.by(Sort.Direction.DESC, "buildDetails.level"));
         Page<Build> builds = buildRepository.findByBuildDetailsLevelIsLessThanEqualAndBuildDetailsLevelGreaterThanEqual(less, greater, pageable);
         List<BuildLiker> likers = getLikers(builds.getContent());
         List<BuildListDto> buildListDtos = mapToBuildListDtoWithLikers(builds.getContent(), likers);
@@ -71,7 +71,7 @@ public class BuildService {
 
     @Transactional(readOnly = true)
     public PageableBuildListDto getBuildsByIsPvp(Boolean isPvp, Long page) {
-        PageRequest pageable = PageRequest.of(Math.toIntExact(page), 25, Sort.by(Sort.Direction.DESC, "buildDetails.level"));
+        PageRequest pageable = PageRequest.of(Math.toIntExact(page), PAGE_SIZE, Sort.by(Sort.Direction.DESC, "buildDetails.level"));
         Page<Build> builds = buildRepository.findByPvpBuild(isPvp, pageable);
         List<BuildLiker> likers = getLikers(builds.getContent());
         List<BuildListDto> buildListDtos = mapToBuildListDtoWithLikers(builds.getContent(), likers);

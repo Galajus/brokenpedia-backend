@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import pl.galajus.brokenpediabackend.publicprofile.model.PublicProfile;
+import pl.galajus.brokenpediabackend.common.model.PublicProfile;
 
 import java.util.Set;
 
