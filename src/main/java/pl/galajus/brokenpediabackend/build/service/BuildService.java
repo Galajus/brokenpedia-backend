@@ -27,6 +27,7 @@ public class BuildService {
 
     private final BuildRepository buildRepository;
     private final BuildLikerRepository buildLikerRepository;
+    private static final Integer PAGE_SIZE = 25;
 
     public Build save(Build build) {
         return buildRepository.save(build);
@@ -37,6 +38,8 @@ public class BuildService {
     }
 
     public void deleteBuildById(Long id) {
+        List<BuildLiker> likers = buildLikerRepository.findByBuildId(id);
+        buildLikerRepository.deleteAll(likers);
         buildRepository.deleteById(id);
     }
 

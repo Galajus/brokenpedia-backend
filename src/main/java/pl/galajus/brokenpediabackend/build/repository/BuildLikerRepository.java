@@ -11,5 +11,6 @@ public interface BuildLikerRepository extends JpaRepository<BuildLiker, UUID> {
 
     Optional<BuildLiker> findByBuildIdAndLikerUuid(Long buildId, UUID likerUuid);
     List<BuildLiker> findByBuildIdIn(List<Long> ids);
+    List<BuildLiker> findByBuildId(Long id);
 
 }
