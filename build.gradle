@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.0.4'
+    id 'org.springframework.boot' version '3.0.7'
     id 'io.spring.dependency-management' version '1.1.0'
 }
 
-group = 'p.galajus'
+group = 'pl.galajus'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
@@ -27,7 +27,9 @@ dependencies {
     implementation 'org.liquibase:liquibase-core'
     implementation 'com.auth0:java-jwt:4.3.0'
     implementation 'commons-codec:commons-codec:1.15'
+    implementation 'commons-io:commons-io:2.11.0'
     implementation 'org.jsoup:jsoup:1.15.4'
+    implementation 'com.github.slugify:slugify:3.0.2'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     annotationProcessor 'org.projectlombok:lombok'
