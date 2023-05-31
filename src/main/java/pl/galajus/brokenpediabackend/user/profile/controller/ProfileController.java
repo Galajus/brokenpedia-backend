@@ -3,7 +3,6 @@ package pl.galajus.brokenpediabackend.user.profile.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,22 +21,16 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
-    @GetMapping("{uuid}")
-    public Profile getProfile(@PathVariable String uuid, Principal principal) {
-        if (!principal.getName().equals(uuid)) {
-            throw new ProfileException("INVALID USER");
-        }
-        return profileService.getProfile(uuid);
+    @GetMapping()
+    public Profile getProfile(Principal principal) {
+        return profileService.getProfile(principal.getName());
     }
 
-    @PutMapping("/nickname/{uuid}")
-    public void updateNickname(@PathVariable String uuid, @RequestBody @Valid ProfileNicknameDto profileNicknameDto, Principal principal) {
-        if (!principal.getName().equals(uuid)) {
-            throw new ProfileException("INVALID USER");
-        }
+    @PutMapping("/nickname")
+    public void updateNickname(@RequestBody @Valid ProfileNicknameDto profileNicknameDto, Principal principal) {
         if (profileService.nicknameExist(profileNicknameDto.getNickname())) {
             throw new ProfileException("NICKNAME EXIST");
         }
-        profileService.updateNickname(uuid, profileNicknameDto.getNickname());
+        profileService.updateNickname(principal.getName(), profileNicknameDto.getNickname());
     }
 }

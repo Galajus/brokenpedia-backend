@@ -1,4 +1,4 @@
-package pl.galajus.brokenpediabackend.common.mail;
+package pl.galajus.brokenpediabackend.user.common.mail;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

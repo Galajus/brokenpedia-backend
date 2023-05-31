@@ -17,6 +17,7 @@ import pl.galajus.brokenpediabackend.user.build.model.dto.PageableBuildListDto;
 import pl.galajus.brokenpediabackend.user.build.repository.BuildLikerRepository;
 import pl.galajus.brokenpediabackend.user.build.repository.BuildRepository;
 import pl.galajus.brokenpediabackend.user.common.model.Profession;
+import pl.galajus.brokenpediabackend.user.common.service.SanitizeService;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +35,7 @@ public class BuildService {
     private static final Integer PAGE_SIZE = 25;
 
     public Build create(Build build) {
+        this.sanitizeBuild(build);
         return buildRepository.save(build);
     }
 
@@ -63,6 +65,8 @@ public class BuildService {
                     .getLevel();
             ossd.setLevel(newLevel);
         });
+
+        this.sanitizeBuild(oldBuild);
         return buildRepository.save(oldBuild);
     }
 
@@ -120,5 +124,11 @@ public class BuildService {
                 .boxed()
                 .toList();
         return buildLikerRepository.findByBuildIdIn(ids);
+    }
+
+    private void sanitizeBuild(Build build) {
+        build.setBuildName(SanitizeService.cleanCompletely(build.getBuildName()));
+        build.setShortDescription(SanitizeService.cleanCompletely(build.getShortDescription()));
+        build.setDescription(SanitizeService.cleanRelaxed(build.getDescription()));
     }
 }

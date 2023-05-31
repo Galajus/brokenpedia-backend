@@ -11,6 +11,7 @@ public class RegisterCredentials {
     @Email
     private String username;
     @NotBlank
+    @Length(min = 5,  max = 32)
     private String password;
     @NotBlank
     private String repeatPassword;

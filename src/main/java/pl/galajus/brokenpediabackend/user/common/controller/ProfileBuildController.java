@@ -49,6 +49,7 @@ public class ProfileBuildController {
         if (buildService.getAmountOfBuilds(principal.getName()) > 200) {
             throw new BuildValidationException("MAX BUILDS REACHED");
         }
+
         return buildService.create(build);
     }
 
@@ -77,8 +78,8 @@ public class ProfileBuildController {
         buildService.deleteBuildById(id);
     }
 
-    @GetMapping("/profile/builds/builds-list/{uuid}")
-    public List<BuildListDto> getUserBuilds(@PathVariable String uuid, Principal principal) {
+    @GetMapping("/profile/builds/builds-list")
+    public List<BuildListDto> getUserBuilds(Principal principal) {
         return buildService.getBuildsListByUuid(principal.getName());
     }
 

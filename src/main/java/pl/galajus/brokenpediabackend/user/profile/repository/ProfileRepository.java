@@ -1,9 +1,9 @@
-package pl.galajus.brokenpediabackend.profile.repository;
+package pl.galajus.brokenpediabackend.user.profile.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import pl.galajus.brokenpediabackend.profile.model.Profile;
+import pl.galajus.brokenpediabackend.user.profile.model.Profile;
 
 import java.util.UUID;
 
