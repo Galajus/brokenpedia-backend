@@ -43,6 +43,9 @@ public class ProfileBuildController {
 
     @PostMapping("/profile/builds")
     public Build createBuild(@RequestBody @Valid Build build, Principal principal) {
+        if (!build.getProfile().getUuid().toString().equals(principal.getName())) {
+            throw new BuildValidationException("INVALID BUILD AUTHOR");
+        }
         if (buildValidationService.isInValid(build)) {
             throw new BuildValidationException("INVALID BUILD");
         }
@@ -85,7 +88,10 @@ public class ProfileBuildController {
 
     //TODO REFACTOR
     @PutMapping("/profile/builds/add-liker")
-    public BuildLiker addLiker(@RequestBody BuildLiker liker) {
+    public BuildLiker addLiker(@RequestBody BuildLiker liker, Principal principal) {
+        if (!liker.getLikerUuid().toString().equals(principal.getName())) {
+            throw new BuildValidationException("INVALID LIKE AUTHOR");
+        }
         return buildLikerService.addLike(liker);
     }
 

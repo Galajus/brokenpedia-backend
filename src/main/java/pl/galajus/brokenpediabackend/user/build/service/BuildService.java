@@ -36,6 +36,7 @@ public class BuildService {
 
     public Build create(Build build) {
         this.sanitizeBuild(build);
+        build.getLiking().clear();
         return buildRepository.save(build);
     }
 
