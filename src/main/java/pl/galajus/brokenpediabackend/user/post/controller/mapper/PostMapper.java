@@ -27,6 +27,7 @@ public class PostMapper {
     private static List<CategoryDto> mapCategoriesToCategoriesDto(List<Category> categories) {
         return categories.stream().map(cat ->
                         CategoryDto.builder()
+                                .id(cat.getId())
                                 .categoryName(cat.getCategoryName())
                                 .categorySlug(cat.getCategorySlug())
                                 .build())
