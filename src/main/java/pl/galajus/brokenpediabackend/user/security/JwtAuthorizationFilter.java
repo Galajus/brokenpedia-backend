@@ -61,7 +61,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                     .verify(token.replace(TOKEN_PREFIX, ""))
                     .getSubject();
         } catch (JWTVerificationException ex) {
-            throw new RequestAuthorizationException("INVALID TOKEN");
+            throw new RequestAuthorizationException("INVALID TOKEN: " + ex.getMessage());
         }
 
     }

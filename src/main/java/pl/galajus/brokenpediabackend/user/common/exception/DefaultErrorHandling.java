@@ -1,12 +1,12 @@
 package pl.galajus.brokenpediabackend.user.common.exception;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import pl.galajus.brokenpediabackend.user.security.exception.RequestAuthorizationException;
 
 import java.util.Date;
 import java.util.NoSuchElementException;
@@ -27,9 +27,9 @@ public class DefaultErrorHandling {
                 ));
     }
 
-    @ExceptionHandler({JWTVerificationException.class})
+    @ExceptionHandler({RequestAuthorizationException.class})
     @ResponseBody
-    public ResponseEntity<?> handleTokenExpiredException(JWTVerificationException e, HttpServletRequest request) {
+    public ResponseEntity<?> handleTokenExpiredException(RequestAuthorizationException e, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new DefaultErrorDto(
                         new Date(),
