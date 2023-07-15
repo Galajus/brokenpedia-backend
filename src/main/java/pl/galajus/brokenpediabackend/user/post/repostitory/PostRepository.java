@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import pl.galajus.brokenpediabackend.user.post.model.FrontPost;
 import pl.galajus.brokenpediabackend.user.post.model.Post;
 
 import java.util.List;
@@ -51,7 +52,22 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                     "left join p.author " +
                     "where p.id in ?1 and " +
                     "p.isPublic = true")
-    List<Post> findPublicPostByIdInWithCategories(List<Long> ids, Sort sort);  //todo: fetching without post content
+    List<Post> findPublicPostByIdInWithCategories(List<Long> ids, Sort sort);
+
+    @Query(value = "select p from FrontPost p " +
+            "left join fetch p.categories " +
+            "join fetch p.author " +
+            "where p.id in ?1 and " +
+            "p.isPublic = true",
+            countQuery = "select count (p) " +
+                    "from FrontPost p " +
+                    "left join p.categories " +
+                    "left join p.author " +
+                    "where p.id in ?1 and " +
+                    "p.isPublic = true")
+    List<FrontPost> findPublicFrontPostByIdInWithCategories(List<Long> ids, Sort sort);
+
+    <T> T findPostById(Long id, Class<T> type);
 
     @Query(value = "select p.id from Post p " +
             "where p.isPublic = ?1",

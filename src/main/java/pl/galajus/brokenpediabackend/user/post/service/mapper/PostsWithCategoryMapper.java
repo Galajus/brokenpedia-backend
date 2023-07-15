@@ -4,6 +4,7 @@ import pl.galajus.brokenpediabackend.user.category.model.Category;
 import pl.galajus.brokenpediabackend.user.category.model.dto.CategoryDto;
 import pl.galajus.brokenpediabackend.user.common.model.PublicProfile;
 import pl.galajus.brokenpediabackend.user.common.model.dto.PublicProfileDto;
+import pl.galajus.brokenpediabackend.user.post.model.FrontPost;
 import pl.galajus.brokenpediabackend.user.post.model.Post;
 import pl.galajus.brokenpediabackend.user.post.model.dto.MainPagePostDto;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 public class PostsWithCategoryMapper {
 
+    @Deprecated
     public static List<MainPagePostDto> mapPostToMainPagePostsWithCategories(List<Post> posts) {
         return posts.stream().map(post ->
                 MainPagePostDto.builder()
@@ -20,7 +22,19 @@ public class PostsWithCategoryMapper {
                         .slug(post.getSlug())
                         .author(mapPublicProfileToPublicProfileDto(post.getAuthor()))
                         .creationDate(post.getCreationDate())
-                        .lastUpdateDate(post.getLastUpdateDate())
+                        .categories(mapPostCategoriesToPostCategoryDto(post.getCategories()))
+                        .build()).toList();
+    }
+
+    public static List<MainPagePostDto> mapFrontPostToMainPagePostsWithCategories(List<FrontPost> posts) {
+        return posts.stream().map(post ->
+                MainPagePostDto.builder()
+                        .title(post.getTitle())
+                        .image(post.getImage())
+                        .description(post.getDescription())
+                        .slug(post.getSlug())
+                        .author(mapPublicProfileToPublicProfileDto(post.getAuthor()))
+                        .creationDate(post.getCreationDate())
                         .categories(mapPostCategoriesToPostCategoryDto(post.getCategories()))
                         .build()).toList();
     }

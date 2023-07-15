@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.galajus.brokenpediabackend.user.post.model.FrontPost;
 import pl.galajus.brokenpediabackend.user.post.model.Post;
 import pl.galajus.brokenpediabackend.user.post.model.dto.MainPagePostDto;
 import pl.galajus.brokenpediabackend.user.post.model.dto.PageableMainPagePostDto;
@@ -27,8 +28,8 @@ public class PostService {
 
         PageRequest pageable = PageRequest.of(page, PAGE_SIZE, Sort.by(Sort.Direction.DESC, "creationDate"));
         Page<Long> pagedPostsIds = postRepository.findAllByIsPublicOnlyIds(true, pageable);
-        List<Post> pagedPosts = postRepository.findPublicPostByIdInWithCategories(pagedPostsIds.getContent(), pageable.getSort());
-        List<MainPagePostDto> mainPagePostsDtos = PostsWithCategoryMapper.mapPostToMainPagePostsWithCategories(pagedPosts);
+        List<FrontPost> pagedPosts = postRepository.findPublicFrontPostByIdInWithCategories(pagedPostsIds.getContent(), pageable.getSort());
+        List<MainPagePostDto> mainPagePostsDtos = PostsWithCategoryMapper.mapFrontPostToMainPagePostsWithCategories(pagedPosts);
 
         return new PageableMainPagePostDto(new PageImpl<>(mainPagePostsDtos, pageable, pagedPostsIds.getTotalElements()));
     }
@@ -41,8 +42,8 @@ public class PostService {
     public PageableMainPagePostDto getPostByCategory(Integer page, String category) {
         PageRequest pageable = PageRequest.of(page, PAGE_SIZE, Sort.by(Sort.Direction.DESC, "creationDate"));
         Page<Long> pagedPostsIds = postRepository.findByCategoryAndIsPublicOnlyIds(category, true, pageable);
-        List<Post> pagedPosts = postRepository.findPublicPostByIdInWithCategories(pagedPostsIds.getContent(), pageable.getSort());
-        List<MainPagePostDto> mainPagePostsDtos = PostsWithCategoryMapper.mapPostToMainPagePostsWithCategories(pagedPosts);
+        List<FrontPost> pagedPosts = postRepository.findPublicFrontPostByIdInWithCategories(pagedPostsIds.getContent(), pageable.getSort());
+        List<MainPagePostDto> mainPagePostsDtos = PostsWithCategoryMapper.mapFrontPostToMainPagePostsWithCategories(pagedPosts);
 
         return new PageableMainPagePostDto(new PageImpl<>(mainPagePostsDtos, pageable, pagedPostsIds.getTotalElements()));
     }
