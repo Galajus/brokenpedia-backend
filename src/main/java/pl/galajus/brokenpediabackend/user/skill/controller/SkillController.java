@@ -43,7 +43,7 @@ public class SkillController {
         return classSkillService.getWithBasicsAndEffects(id);
     }
 
-    @PostMapping
+    @PostMapping //todo admin check
     public ClassSkill updateClassSkill(@RequestBody ClassSkillDto classSkillDto) {
         return classSkillService.save(mapToClassSkill(classSkillDto));
     }
@@ -110,6 +110,7 @@ public class SkillController {
                 .level(classSkillDto.getLevel())
                 .name(classSkillDto.getName())
                 .profession(classSkillDto.getProfession())
+                .beginLevel(classSkillDto.getBeginLevel())
                 .minLevel(classSkillDto.getMinLevel())
                 .maxLevel(classSkillDto.getMaxLevel())
                 .image(classSkillDto.getImage())
