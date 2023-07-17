@@ -27,6 +27,8 @@ public class SanitizeService {
         }
         Safelist font = Safelist.relaxed().addTags("font");
         font.addAttributes("font", "size", "color");
+        font.removeTags("img");
+        font.removeAttributes("img", "align", "alt", "height", "src", "title", "width");
         return Jsoup.clean(content, font);
     }
 
