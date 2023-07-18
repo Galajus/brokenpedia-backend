@@ -16,6 +16,8 @@ public class ClassSkillDto {
     private Integer minLevel;
     private Integer beginLevel;
     private String name;
+    private String requirements;
+    private String formula;
     private String image;
     private Profession profession;
 

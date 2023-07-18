@@ -83,7 +83,7 @@ public class SkillController {
         return Arrays.stream(Profession.values()).toList();
     }
     @GetMapping("/difficulties")
-    public List<SkillDifficulty> getClasses() {
+    public List<SkillDifficulty> getDifficulties() {
         return Arrays.stream(SkillDifficulty.values()).toList();
     }
 
@@ -94,6 +94,8 @@ public class SkillController {
                 ClassSkillDto.builder()
                         .id(skill.getId())
                         .name(skill.getName())
+                        .requirements(skill.getRequirements())
+                        .formula(skill.getFormula())
                         .level(skill.getLevel())
                         .beginLevel(skill.getBeginLevel())
                         .minLevel(skill.getMinLevel())
@@ -109,6 +111,8 @@ public class SkillController {
                 .id(classSkillDto.getId())
                 .level(classSkillDto.getLevel())
                 .name(classSkillDto.getName())
+                .requirements(classSkillDto.getRequirements())
+                .formula(classSkillDto.getFormula())
                 .profession(classSkillDto.getProfession())
                 .beginLevel(classSkillDto.getBeginLevel())
                 .minLevel(classSkillDto.getMinLevel())

@@ -33,6 +33,8 @@ public class ClassSkill {
     private Integer minLevel;
     private Integer beginLevel;
     private String name;
+    private String requirements;
+    private String formula;
     private String image;
     @Enumerated(value = EnumType.STRING)
     private Profession profession;
