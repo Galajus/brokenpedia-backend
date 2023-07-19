@@ -14,6 +14,6 @@ public class SkillCustomEffect {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
-    private Integer value;
+    private Float value;
     private Long skillBasicId;
 }

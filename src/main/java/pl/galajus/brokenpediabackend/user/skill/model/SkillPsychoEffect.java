@@ -18,7 +18,7 @@ public class SkillPsychoEffect {
     private Long id;
     @Enumerated(EnumType.STRING)
     private PsychoEffect psychoEffect;
-    private Integer value;
+    private Float value;
     private Long skillBasicId;
 
 }
