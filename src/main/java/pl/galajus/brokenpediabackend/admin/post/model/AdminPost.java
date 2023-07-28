@@ -17,6 +17,7 @@ import pl.galajus.brokenpediabackend.user.common.model.PublicProfile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -53,7 +54,7 @@ public class AdminPost {
     }
 
     public void removeCategory(Long categoryId) {
-        AdminCategory category = this.categories.stream().filter(cat -> cat.getId() == categoryId).findFirst().orElse(null);
+        AdminCategory category = this.categories.stream().filter(cat -> Objects.equals(cat.getId(), categoryId)).findFirst().orElse(null);
         if (category != null) {
             this.categories.remove(category);
             category.getPosts().remove(this);
