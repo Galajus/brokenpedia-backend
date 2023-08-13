@@ -34,8 +34,9 @@ public class PostController {
     @GetMapping("/{slug}")
     public SinglePostDto getPostBySlug(@PathVariable String slug, HttpServletRequest request) {
         Post post = postService.getSinglePublicPostBySlug(slug);
+        String nextPost = postService.getNextPost(post.getId());
+        String previousPost = postService.getPreviousPost(post.getId());
         postViewerService.incrementPostViews(post.getId(), request);
-        return PostMapper.mapPostToSinglePostDto(post);
+        return PostMapper.mapPostToSinglePostDto(post, nextPost, previousPost);
     }
-
 }

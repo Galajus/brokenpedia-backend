@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.galajus.brokenpediabackend.user.post.controller.projection.ProjectionPostIdAndSlug;
 import pl.galajus.brokenpediabackend.user.post.model.FrontPost;
 import pl.galajus.brokenpediabackend.user.post.model.Post;
 import pl.galajus.brokenpediabackend.user.post.model.dto.MainPagePostDto;
@@ -15,6 +16,7 @@ import pl.galajus.brokenpediabackend.user.post.repostitory.PostRepository;
 import pl.galajus.brokenpediabackend.user.post.service.mapper.PostsWithCategoryMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -46,5 +48,14 @@ public class PostService {
         List<MainPagePostDto> mainPagePostsDtos = PostsWithCategoryMapper.mapFrontPostToMainPagePostsWithCategories(pagedPosts);
 
         return new PageableMainPagePostDto(new PageImpl<>(mainPagePostsDtos, pageable, pagedPostsIds.getTotalElements()));
+    }
+
+    public String getNextPost(Long id) {
+        Optional<ProjectionPostIdAndSlug> post = postRepository.findFirstByIdIsAfterOrderByIdAsc(id);
+        return post.map(ProjectionPostIdAndSlug::getSlug).orElse(null);
+    }
+    public String getPreviousPost(Long id) {
+        Optional<ProjectionPostIdAndSlug> post = postRepository.findFirstByIdIsBeforeOrderByIdDesc(id);
+        return post.map(ProjectionPostIdAndSlug::getSlug).orElse(null);
     }
 }

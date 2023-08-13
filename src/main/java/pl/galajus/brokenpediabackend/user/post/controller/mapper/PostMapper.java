@@ -9,7 +9,7 @@ import java.util.List;
 
 public class PostMapper {
 
-    public static SinglePostDto mapPostToSinglePostDto(Post post) {
+    public static SinglePostDto mapPostToSinglePostDto(Post post, String nextPostSlug, String previousPostSlug) {
         return SinglePostDto.builder()
                 .id(post.getId())
                 .creationDate(post.getCreationDate())
@@ -22,6 +22,8 @@ public class PostMapper {
                 .content(post.getContent())
                 .image(post.getImage())
                 .views(post.getViews())
+                .nextPostSlug(nextPostSlug)
+                .previousPostSlug(previousPostSlug)
                 .build();
     }
 

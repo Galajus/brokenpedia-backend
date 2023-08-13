@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import pl.galajus.brokenpediabackend.user.post.controller.projection.ProjectionPostIdAndSlug;
 import pl.galajus.brokenpediabackend.user.post.model.FrontPost;
 import pl.galajus.brokenpediabackend.user.post.model.Post;
 
@@ -92,4 +93,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("UPDATE Post p SET p.views = p.views + 1 WHERE p.id = ?1")
     void incrementPostViews(Long postId);
 
+    Optional<ProjectionPostIdAndSlug> findFirstByIdIsAfterOrderByIdAsc(Long id);
+    Optional<ProjectionPostIdAndSlug> findFirstByIdIsBeforeOrderByIdDesc(Long id);
 }

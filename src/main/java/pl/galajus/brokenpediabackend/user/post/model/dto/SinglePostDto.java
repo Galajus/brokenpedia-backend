@@ -25,5 +25,7 @@ public class SinglePostDto {
     private String content;
     private String image;
     private Long views;
+    private String nextPostSlug;
+    private String previousPostSlug;
 
 }
