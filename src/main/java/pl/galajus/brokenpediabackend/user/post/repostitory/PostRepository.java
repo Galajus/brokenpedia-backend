@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import pl.galajus.brokenpediabackend.user.post.model.FrontPost;
 import pl.galajus.brokenpediabackend.user.post.model.Post;
@@ -86,5 +87,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "left join fetch p.categories " +
             "where p.slug = ?1 and p.isPublic = ?2")
     Optional<Post> findPostBySlugAndIsPublic(String slug, Boolean isPublic);
+
+    @Modifying
+    @Query("UPDATE Post p SET p.views = p.views + 1 WHERE p.id = ?1")
+    void incrementPostViews(Long postId);
 
 }

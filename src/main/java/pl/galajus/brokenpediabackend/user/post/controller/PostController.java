@@ -1,5 +1,6 @@
 package pl.galajus.brokenpediabackend.user.post.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import pl.galajus.brokenpediabackend.user.post.model.Post;
 import pl.galajus.brokenpediabackend.user.post.model.dto.PageableMainPagePostDto;
 import pl.galajus.brokenpediabackend.user.post.model.dto.SinglePostDto;
 import pl.galajus.brokenpediabackend.user.post.service.PostService;
+import pl.galajus.brokenpediabackend.user.post.service.PostViewerService;
 
 @RestController
 @RequestMapping("/posts")
@@ -17,6 +19,7 @@ import pl.galajus.brokenpediabackend.user.post.service.PostService;
 public class PostController {
 
     private final PostService postService;
+    private final PostViewerService postViewerService;
 
     @GetMapping
     public PageableMainPagePostDto getNewestPosts() {
@@ -29,8 +32,9 @@ public class PostController {
     }
 
     @GetMapping("/{slug}")
-    public SinglePostDto getPostBySlug(@PathVariable String slug) {
+    public SinglePostDto getPostBySlug(@PathVariable String slug, HttpServletRequest request) {
         Post post = postService.getSinglePublicPostBySlug(slug);
+        postViewerService.incrementPostViews(post.getId(), request);
         return PostMapper.mapPostToSinglePostDto(post);
     }
 

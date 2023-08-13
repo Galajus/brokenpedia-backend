@@ -21,6 +21,7 @@ public class PostMapper {
                 .description(post.getDescription())
                 .content(post.getContent())
                 .image(post.getImage())
+                .views(post.getViews())
                 .build();
     }
 

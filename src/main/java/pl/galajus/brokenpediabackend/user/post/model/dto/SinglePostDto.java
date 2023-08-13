@@ -24,5 +24,6 @@ public class SinglePostDto {
     private String description;
     private String content;
     private String image;
+    private Long views;
 
 }
