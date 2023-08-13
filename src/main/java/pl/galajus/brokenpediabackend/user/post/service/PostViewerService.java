@@ -42,6 +42,7 @@ public class PostViewerService {
                 return;
             }
         }
+        log.info("User ip to increment views not found");
     }
 
     public void doIncrement(Long postId, String viewerIp) {
