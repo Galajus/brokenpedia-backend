@@ -42,7 +42,7 @@ public class AdminPostController {
         return adminPostService.updatePost(adminPost);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public void deletePost(@PathVariable Long id) {
         adminPostService.deletePost(id);
     }

@@ -39,9 +39,11 @@ public class AdminCategoryService {
         return adminCategoryRepository.findAllByIdIn(categoriesIds);
     }
 
+    @Transactional //todo gettin post to delete as ids without heavy post content
     public void deleteCategory(Long id) {
-        adminCategoryRepository.deleteCategoryFromPosts(id);
-        adminCategoryRepository.deleteById(id);
+        AdminCategory adminCategory = adminCategoryRepository.findById(id).orElseThrow();
+        adminCategory.removeAdminPosts();
+        adminCategoryRepository.delete(adminCategory);
     }
 
     public AdminCategory getById(Long id) {

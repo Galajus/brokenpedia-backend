@@ -38,4 +38,9 @@ public class AdminCategory {
     @JsonIgnore
     private List<AdminPost> posts;
 
+    public void removeAdminPosts() {
+        this.posts.forEach(p -> p.removeCategory(this));
+        this.posts.clear();
+    }
+
 }

@@ -13,7 +13,6 @@ import pl.galajus.brokenpediabackend.admin.category.controller.mapper.AdminCateg
 import pl.galajus.brokenpediabackend.admin.category.model.AdminCategory;
 import pl.galajus.brokenpediabackend.admin.category.model.dto.AdminCategoryDto;
 import pl.galajus.brokenpediabackend.admin.category.service.AdminCategoryService;
-import pl.galajus.brokenpediabackend.admin.post.repostitory.AdminPostRepository;
 
 import java.util.List;
 
@@ -23,7 +22,6 @@ import java.util.List;
 public class AdminCategoryController {
 
     private final AdminCategoryService adminCategoryService;
-    private final AdminPostRepository adminPostRepository;
 
     @GetMapping
     public List<AdminCategoryDto> getAllCategories() {

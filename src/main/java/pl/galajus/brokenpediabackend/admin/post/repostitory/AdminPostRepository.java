@@ -27,7 +27,7 @@ public interface AdminPostRepository extends JpaRepository<AdminPost, Long> {
                     "left join p.categories " +
                     "left join p.author " +
                     "where p.id in ?1")
-    List<AdminPost> findPostByIdInWithCategories(List<Long> ids, Sort sort); //todo: fetching without post content
+    List<AdminPost> findPostByIdInWithCategories(List<Long> ids, Sort sort); //todo: fetching without post content LONG TERM IDEA
 
     @Query(value = "select p.id from AdminPost p",
             countQuery = "select count (p) " +
