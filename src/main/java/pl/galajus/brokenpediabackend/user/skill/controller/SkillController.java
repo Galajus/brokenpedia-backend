@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.galajus.brokenpediabackend.user.common.model.Profession;
 import pl.galajus.brokenpediabackend.user.common.model.PsychoEffect;
+import pl.galajus.brokenpediabackend.user.skill.controller.mapper.SkillMapper;
 import pl.galajus.brokenpediabackend.user.skill.model.ClassSkill;
 import pl.galajus.brokenpediabackend.user.skill.model.SkillBasic;
 import pl.galajus.brokenpediabackend.user.skill.model.SkillDifficulty;
@@ -35,7 +36,7 @@ public class SkillController {
 
     @GetMapping
     public List<ClassSkillDto> getSkills() {
-        return mapToClassSkillDto(classSkillService.getAll());
+        return SkillMapper.mapToClassSkillDto(classSkillService.getAll());
     }
 
     @GetMapping("/{id}")
@@ -43,9 +44,9 @@ public class SkillController {
         return classSkillService.getWithBasicsAndEffects(id);
     }
 
-    @PostMapping //todo admin check
+    @PostMapping
     public ClassSkill updateClassSkill(@RequestBody ClassSkillDto classSkillDto) {
-        return classSkillService.save(mapToClassSkill(classSkillDto));
+        return classSkillService.save(SkillMapper.mapToClassSkill(classSkillDto));
     }
 
     @PostMapping("/basic")
@@ -85,39 +86,5 @@ public class SkillController {
     @GetMapping("/difficulties")
     public List<SkillDifficulty> getDifficulties() {
         return Arrays.stream(SkillDifficulty.values()).toList();
-    }
-
-
-    //TODO MAPPING CLASS
-    private List<ClassSkillDto> mapToClassSkillDto(List<ClassSkill> skills) {
-        return skills.stream().map(skill ->
-                ClassSkillDto.builder()
-                        .id(skill.getId())
-                        .name(skill.getName())
-                        .requirements(skill.getRequirements())
-                        .formula(skill.getFormula())
-                        .level(skill.getLevel())
-                        .beginLevel(skill.getBeginLevel())
-                        .minLevel(skill.getMinLevel())
-                        .maxLevel(skill.getMaxLevel())
-                        .image(skill.getImage())
-                        .profession(skill.getProfession())
-                        .build())
-                .toList();
-    }
-
-    private ClassSkill mapToClassSkill(ClassSkillDto classSkillDto) {
-        return ClassSkill.builder()
-                .id(classSkillDto.getId())
-                .level(classSkillDto.getLevel())
-                .name(classSkillDto.getName())
-                .requirements(classSkillDto.getRequirements())
-                .formula(classSkillDto.getFormula())
-                .profession(classSkillDto.getProfession())
-                .beginLevel(classSkillDto.getBeginLevel())
-                .minLevel(classSkillDto.getMinLevel())
-                .maxLevel(classSkillDto.getMaxLevel())
-                .image(classSkillDto.getImage())
-                .build();
     }
 }
