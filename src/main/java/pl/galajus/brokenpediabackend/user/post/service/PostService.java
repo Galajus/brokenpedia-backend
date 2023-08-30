@@ -51,11 +51,11 @@ public class PostService {
     }
 
     public String getNextPost(Long id) {
-        Optional<ProjectionPostIdAndSlug> post = postRepository.findFirstByIdIsAfterOrderByIdAsc(id);
+        Optional<ProjectionPostIdAndSlug> post = postRepository.findFirstByIsPublicAndIdAfterOrderByIdAsc(true, id);
         return post.map(ProjectionPostIdAndSlug::getSlug).orElse(null);
     }
     public String getPreviousPost(Long id) {
-        Optional<ProjectionPostIdAndSlug> post = postRepository.findFirstByIdIsBeforeOrderByIdDesc(id);
+        Optional<ProjectionPostIdAndSlug> post = postRepository.findFirstByIsPublicAndIdBeforeOrderByIdDesc(true, id);
         return post.map(ProjectionPostIdAndSlug::getSlug).orElse(null);
     }
 }

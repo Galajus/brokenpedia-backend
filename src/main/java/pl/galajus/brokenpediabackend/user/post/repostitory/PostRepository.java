@@ -93,6 +93,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("UPDATE Post p SET p.views = p.views + 1 WHERE p.id = ?1")
     void incrementPostViews(Long postId);
 
-    Optional<ProjectionPostIdAndSlug> findFirstByIdIsAfterOrderByIdAsc(Long id);
-    Optional<ProjectionPostIdAndSlug> findFirstByIdIsBeforeOrderByIdDesc(Long id);
+    Optional<ProjectionPostIdAndSlug> findFirstByIsPublicAndIdAfterOrderByIdAsc(Boolean isPublic, Long id);
+    Optional<ProjectionPostIdAndSlug> findFirstByIsPublicAndIdBeforeOrderByIdDesc(Boolean isPublic, Long id);
 }
