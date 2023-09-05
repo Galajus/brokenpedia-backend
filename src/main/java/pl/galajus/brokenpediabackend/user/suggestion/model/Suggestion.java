@@ -1,6 +1,8 @@
 package pl.galajus.brokenpediabackend.user.suggestion.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,8 +24,12 @@ public class Suggestion {
     @Length(min = 3, max = 18)
     private String author;
     @NotNull
+    @Enumerated(value = EnumType.STRING)
     private SuggestionType type;
     @NotBlank
     @Length(min = 15, max = 5000)
     private String suggestion;
+    @Enumerated(value = EnumType.STRING)
+    private SuggestionStatus status;
+    private String adminComment;
 }
