@@ -20,11 +20,14 @@ public class BuildValidationService {
 
     private static final int DEFAULT_STAT_SUM = 100;
     private static final int STATS_BY_LEVEL = 4;
+    private static final int VALID_LENGTH = 24;
     private final SkillCostService skillCostService;
     private final ClassSkillService classSkillService;
 
     public boolean isInValid(Build build) {
         Integer level = build.getBuildDetails().getLevel();
+
+        checkIfBuildDataLengthIsValid(build);
 
         List<BuildSkillStatData> stats = build.getBuildDetails().getSkillStatData().stream()
                 .map(buildSkillStatData -> {
@@ -64,6 +67,12 @@ public class BuildValidationService {
         }
 
         return false;
+    }
+
+    private void checkIfBuildDataLengthIsValid(Build build) {
+        if (build.getBuildDetails().getSkillStatData().size() != VALID_LENGTH) {
+            throw new BuildValidationException("SKILLSTATDATA INVALID LENGTH");
+        }
     }
 
     private boolean spentStatsIsInvalid(int level, List<BuildSkillStatData> stats) {
