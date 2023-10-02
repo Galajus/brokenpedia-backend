@@ -32,6 +32,8 @@ public class AdminLegendaryItem {
     private List<AdminMonster> droppingMonsters;
     @Enumerated(value = EnumType.STRING)
     private AdminItemType type;
+    @Enumerated(value = EnumType.STRING)
+    private AdminItemFamily family;
     private Integer weight;
     private Integer rank;
     private Integer capacity;

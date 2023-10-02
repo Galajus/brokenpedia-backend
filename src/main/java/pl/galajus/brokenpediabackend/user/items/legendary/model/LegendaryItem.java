@@ -30,6 +30,8 @@ public class LegendaryItem {
     private List<Monster> droppingMonsters;
     @Enumerated(value = EnumType.STRING)
     private ItemType type;
+    @Enumerated(value = EnumType.STRING)
+    private ItemFamily family;
     private Integer weight;
     private Integer rank;
     private Integer capacity;
