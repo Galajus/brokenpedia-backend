@@ -17,6 +17,7 @@ public class LegendaryItemMapper {
         return LegendaryItemDto.builder()
                 .id(i.getId())
                 .name(i.getName())
+                .family(i.getFamily())
                 .type(i.getType())
                 .weight(i.getWeight())
                 .rank(i.getRank())

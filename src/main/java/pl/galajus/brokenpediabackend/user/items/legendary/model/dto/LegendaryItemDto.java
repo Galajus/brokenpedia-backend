@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.galajus.brokenpediabackend.user.items.legendary.model.DamageType;
+import pl.galajus.brokenpediabackend.user.items.legendary.model.ItemFamily;
 import pl.galajus.brokenpediabackend.user.items.legendary.model.ItemType;
 
 @Getter
@@ -17,6 +18,8 @@ public class LegendaryItemDto {
 
     private Long id;
     private String name;
+
+    private ItemFamily family;
     private ItemType type;
     private Integer weight;
     private Integer rank;
