@@ -21,4 +21,5 @@ public class AdminOrb {
     @Enumerated(value = EnumType.STRING)
     private AdminOrbType type;
     private Double startBonus;
+    private String shortName;
 }

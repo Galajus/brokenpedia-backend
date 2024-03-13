@@ -19,4 +19,5 @@ public class Orb {
     @Enumerated(value = EnumType.STRING)
     private OrbType type;
     private Double startBonus;
+    private String shortName;
 }
