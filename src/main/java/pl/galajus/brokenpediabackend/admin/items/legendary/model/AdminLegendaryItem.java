@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import pl.galajus.brokenpediabackend.admin.gameentities.model.AdminMonster;
@@ -34,6 +35,8 @@ public class AdminLegendaryItem {
     private AdminItemType type;
     @Enumerated(value = EnumType.STRING)
     private AdminItemFamily family;
+    @ManyToOne
+    private AdminItemSet itemSet;
     private Integer weight;
     private Integer rank;
     private Integer capacity;

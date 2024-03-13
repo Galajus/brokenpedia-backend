@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import pl.galajus.brokenpediabackend.user.gameentities.model.Monster;
 
@@ -32,6 +33,8 @@ public class LegendaryItem {
     private ItemType type;
     @Enumerated(value = EnumType.STRING)
     private ItemFamily family;
+    @ManyToOne
+    private ItemSet itemSet;
     private Integer weight;
     private Integer rank;
     private Integer capacity;
