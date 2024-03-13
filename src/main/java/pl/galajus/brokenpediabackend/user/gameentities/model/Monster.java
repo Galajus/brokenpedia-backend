@@ -27,4 +27,5 @@ public class Monster {
             CascadeType.MERGE
     }, mappedBy = "droppingMonsters")
     private List<LegendaryItem> legendaryDrops;
+    private Integer level;
 }

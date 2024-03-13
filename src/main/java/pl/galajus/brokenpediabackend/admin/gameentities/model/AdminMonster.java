@@ -34,6 +34,7 @@ public class AdminMonster {
     }, mappedBy = "droppingMonsters")
     @JsonIgnore
     private List<AdminLegendaryItem> legendaryDrops;
+    private Integer level;
 
     public void removeLegendaryDrops() {
         this.legendaryDrops.forEach(drop -> drop.removeDroppingMonster(this));
