@@ -20,4 +20,12 @@ public class AdminOrbService {
     public List<AdminOrb> saveAllOrbs(List<AdminOrb> orbs) {
         return adminOrbRepository.saveAll(orbs);
     }
+
+    public AdminOrb getOrb(Long id) {
+        return adminOrbRepository.findById(id).orElseThrow();
+    }
+
+    public AdminOrb updateOrb(AdminOrb orb) {
+        return adminOrbRepository.save(orb);
+    }
 }
