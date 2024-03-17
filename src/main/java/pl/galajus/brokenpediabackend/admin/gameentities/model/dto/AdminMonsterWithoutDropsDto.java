@@ -17,4 +17,5 @@ public class AdminMonsterWithoutDropsDto {
     private Long id;
     private String name;
     private AdminMonsterType type;
+    private Integer level;
 }

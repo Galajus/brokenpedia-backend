@@ -17,6 +17,7 @@ public class AdminMonsterMapper {
                 .id(adminMonster.getId())
                 .name(adminMonster.getName())
                 .type(adminMonster.getType())
+                .level(adminMonster.getLevel())
                 .build();
     }
 

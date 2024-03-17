@@ -18,6 +18,7 @@ public class MonsterMapper {
                 .id(m.getId())
                 .name(m.getName())
                 .type(m.getType())
+                .level(m.getLevel())
                 .legendaryDrops(LegendaryItemMapper.mapLegendaryItemsToLegendaryItemsDto(m.getLegendaryDrops())) //todo move to common?
                 .build();
     }

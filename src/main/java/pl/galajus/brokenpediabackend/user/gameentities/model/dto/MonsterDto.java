@@ -20,4 +20,5 @@ public class MonsterDto {
     private String name;
     private MonsterType type;
     private List<LegendaryItemDto> legendaryDrops; //todo: move to common legendary items dto?
+    private Integer level;
 }
