@@ -3,6 +3,7 @@ package pl.galajus.brokenpediabackend.user.items.legendary.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,7 +34,8 @@ public class LegendaryItem {
     private ItemType type;
     @Enumerated(value = EnumType.STRING)
     private ItemFamily family;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_set_id")
     private ItemSet itemSet;
     private Integer weight;
     private Integer rank;

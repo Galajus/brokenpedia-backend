@@ -1,5 +1,6 @@
 package pl.galajus.brokenpediabackend.admin.items.legendary.controller.mapper;
 
+import jakarta.annotation.Nullable;
 import pl.galajus.brokenpediabackend.admin.items.legendary.model.AdminItemSet;
 import pl.galajus.brokenpediabackend.admin.items.legendary.model.dto.AdminItemSetAloneDto;
 import pl.galajus.brokenpediabackend.admin.items.legendary.model.dto.AdminItemSetDto;
@@ -14,7 +15,10 @@ public class AdminItemSetDtoMapper {
                 .toList();
     }
 
-    public static AdminItemSetAloneDto mapAdminItemSetToAdminSetAloneDto(AdminItemSet adminSet) {
+    public static AdminItemSetAloneDto mapAdminItemSetToAdminSetAloneDto(@Nullable AdminItemSet adminSet) {
+        if (adminSet == null) {
+            return null;
+        }
         return AdminItemSetAloneDto.builder()
                 .id(adminSet.getId())
                 .name(adminSet.getName())

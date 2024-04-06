@@ -11,12 +11,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.Setter;
 import pl.galajus.brokenpediabackend.user.common.model.Profession;
 
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "item_set")
 public class AdminItemSet {
 
@@ -26,8 +28,7 @@ public class AdminItemSet {
     private String name;
     @Enumerated(value = EnumType.STRING)
     private Profession requiredClass;
-    @OneToMany
-    @JoinColumn(name = "item_set_id")
+    @OneToMany(mappedBy = "itemSet")
     private List<AdminLegendaryItem> setLegendaryItems;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "itemSetId")
@@ -36,4 +37,8 @@ public class AdminItemSet {
     @JoinColumn(name = "itemSetId")
     private List<AdminItemSetCustomEffect> customEffects;
 
+
+    public void removeSetLegendaryItems() {
+        setLegendaryItems.forEach(i -> i.removeItemSet(this));
+    }
 }

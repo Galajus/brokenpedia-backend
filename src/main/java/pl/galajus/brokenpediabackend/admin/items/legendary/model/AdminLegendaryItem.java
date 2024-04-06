@@ -3,6 +3,7 @@ package pl.galajus.brokenpediabackend.admin.items.legendary.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,7 +36,8 @@ public class AdminLegendaryItem {
     private AdminItemType type;
     @Enumerated(value = EnumType.STRING)
     private AdminItemFamily family;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_set_id")
     private AdminItemSet itemSet;
     private Integer weight;
     private Integer rank;
@@ -69,5 +71,9 @@ public class AdminLegendaryItem {
 
     public void removeDroppingMonster(AdminMonster adminMonster) {
         this.droppingMonsters.remove(adminMonster);
+    }
+
+    public void removeItemSet(AdminItemSet adminItemSet) {
+        this.itemSet = null;
     }
 }

@@ -22,8 +22,15 @@ public class AdminItemSetService {
         return adminItemSetRepository.save(adminSet);
     }
 
-    public AdminItemSet update(AdminItemSet adminSet) {
-        return adminItemSetRepository.save(adminSet);
+    @Transactional
+    public AdminItemSet update(AdminItemSet newSet) {
+        return adminItemSetRepository.update(
+                newSet.getId(),
+                newSet.getName(),
+                newSet.getRequiredClass(),
+                newSet.getPsychoEffects(),
+                newSet.getCustomEffects()
+        );
     }
 
     @Transactional
@@ -33,7 +40,11 @@ public class AdminItemSetService {
         adminItemSetRepository.findByIdWithCustomEffects(id).orElseThrow();
         return itemSet;
     }
+
+    @Transactional
     public void deleteById(Long id) {
+        AdminItemSet set = adminItemSetRepository.findById(id).orElseThrow();
+        set.removeSetLegendaryItems();
         adminItemSetRepository.deleteById(id);
     }
 }

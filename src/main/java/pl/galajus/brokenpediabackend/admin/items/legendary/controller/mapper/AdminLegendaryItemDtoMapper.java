@@ -18,6 +18,7 @@ public class AdminLegendaryItemDtoMapper {
                 .id(i.getId())
                 .name(i.getName())
                 .type(i.getType())
+                .family(i.getFamily())
                 .weight(i.getWeight())
                 .rank(i.getRank())
                 .capacity(i.getCapacity())
@@ -44,6 +45,19 @@ public class AdminLegendaryItemDtoMapper {
                 .energyResistance(i.getEnergyResistance())
                 .coldResistance(i.getColdResistance())
                 .build();
+    }
+
+    public static AdminLegendaryItemDto mapAdminLegendaryItemToAdminLegendaryItemWithSetsDto(AdminLegendaryItem i) {
+        AdminLegendaryItemDto adminLegendaryItemDto = mapAdminLegendaryItemToAdminLegendaryItemDto(i);
+        adminLegendaryItemDto.setItemSet(AdminItemSetDtoMapper.mapAdminItemSetToAdminSetAloneDto(i.getItemSet()));
+        return adminLegendaryItemDto;
+    }
+
+    public static AdminLegendaryItemDto mapAdminLegendaryItemToAdminLegendaryItemWithSetsAndMonstersDto(AdminLegendaryItem i) {
+        AdminLegendaryItemDto adminLegendaryItemDto = mapAdminLegendaryItemToAdminLegendaryItemDto(i);
+        adminLegendaryItemDto.setDroppingMonsters(i.getDroppingMonsters());
+        adminLegendaryItemDto.setItemSet(AdminItemSetDtoMapper.mapAdminItemSetToAdminSetAloneDto(i.getItemSet()));
+        return adminLegendaryItemDto;
     }
 
 }

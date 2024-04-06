@@ -45,7 +45,7 @@ public class AdminItemSetController {
     @PutMapping
     public AdminItemSetDto updateAdminSet(@RequestBody AdminItemSet adminSet) {
         return AdminItemSetDtoMapper
-                .mapAdminItemSetToAdminSetDto(adminItemSetService.create(adminSet));
+                .mapAdminItemSetToAdminSetDto(adminItemSetService.update(adminSet));
     }
 
     @DeleteMapping("/{id}")

@@ -5,8 +5,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.galajus.brokenpediabackend.admin.gameentities.model.AdminMonster;
 import pl.galajus.brokenpediabackend.admin.items.legendary.model.AdminDamageType;
+import pl.galajus.brokenpediabackend.admin.items.legendary.model.AdminItemFamily;
 import pl.galajus.brokenpediabackend.admin.items.legendary.model.AdminItemType;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,6 +22,9 @@ public class AdminLegendaryItemDto {
     private Long id;
     private String name;
     private AdminItemType type;
+    private AdminItemFamily family;
+    private AdminItemSetAloneDto itemSet;
+    private List<AdminMonster> droppingMonsters;
     private Integer weight;
     private Integer rank;
     private Integer capacity;

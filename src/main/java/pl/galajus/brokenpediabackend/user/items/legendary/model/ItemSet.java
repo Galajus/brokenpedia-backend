@@ -24,8 +24,7 @@ public class ItemSet {
     private String name;
     @Enumerated(value = EnumType.STRING)
     private Profession requiredClass;
-    @OneToMany
-    @JoinColumn(name = "item_set_id")
+    @OneToMany(mappedBy = "itemSet")
     private List<LegendaryItem> setLegendaryItems;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "itemSetId")

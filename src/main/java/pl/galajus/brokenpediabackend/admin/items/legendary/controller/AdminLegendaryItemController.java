@@ -30,18 +30,21 @@ public class AdminLegendaryItemController {
     }
 
     @GetMapping("/{id}")
-    public AdminLegendaryItem getById(@PathVariable Long id) {
-        return adminLegendaryItemService.getById(id);
+    public AdminLegendaryItemDto getById(@PathVariable Long id) {
+        return AdminLegendaryItemDtoMapper
+                .mapAdminLegendaryItemToAdminLegendaryItemWithSetsAndMonstersDto(adminLegendaryItemService.getById(id));
     }
 
     @PostMapping
-    public AdminLegendaryItem createAdminLegendaryItem(@RequestBody AdminLegendaryItem adminLegendaryItem) {
-        return adminLegendaryItemService.create(adminLegendaryItem);
+    public AdminLegendaryItemDto createAdminLegendaryItem(@RequestBody AdminLegendaryItem adminLegendaryItem) {
+        return AdminLegendaryItemDtoMapper
+                .mapAdminLegendaryItemToAdminLegendaryItemDto(adminLegendaryItemService.create(adminLegendaryItem));
     }
 
     @PutMapping
-    public AdminLegendaryItem updateAdminLegendaryItem(@RequestBody AdminLegendaryItem adminLegendaryItem) {
-        return adminLegendaryItemService.update(adminLegendaryItem);
+    public AdminLegendaryItemDto updateAdminLegendaryItem(@RequestBody AdminLegendaryItem adminLegendaryItem) {
+        return AdminLegendaryItemDtoMapper
+                .mapAdminLegendaryItemToAdminLegendaryItemDto(adminLegendaryItemService.update(adminLegendaryItem));
     }
 
     @DeleteMapping("/{id}")
