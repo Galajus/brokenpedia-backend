@@ -20,4 +20,12 @@ public class AdminDrifService {
     public List<AdminDrif> saveAll(List<AdminDrif> drifs) {
         return adminDrifRepository.saveAll(drifs);
     }
+
+    public AdminDrif getDrif(Long id) {
+        return adminDrifRepository.findById(id).orElseThrow();
+    }
+
+    public AdminDrif updateDrif(AdminDrif drif) {
+        return adminDrifRepository.save(drif);
+    }
 }
