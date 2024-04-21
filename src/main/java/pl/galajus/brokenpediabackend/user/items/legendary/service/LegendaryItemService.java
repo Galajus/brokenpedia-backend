@@ -1,6 +1,7 @@
 package pl.galajus.brokenpediabackend.user.items.legendary.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import pl.galajus.brokenpediabackend.user.items.legendary.model.ItemFamily;
 import pl.galajus.brokenpediabackend.user.items.legendary.model.ItemType;
@@ -16,6 +17,7 @@ public class LegendaryItemService {
     private final LegendaryItemRepository legendaryItemRepository;
 
 
+    @Cacheable(cacheNames = "LegendaryItems")
     public List<LegendaryItem> getAll() {
         return legendaryItemRepository.findAll();
     }

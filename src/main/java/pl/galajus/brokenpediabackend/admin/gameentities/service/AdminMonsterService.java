@@ -2,6 +2,8 @@ package pl.galajus.brokenpediabackend.admin.gameentities.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import pl.galajus.brokenpediabackend.admin.gameentities.model.AdminMonster;
 import pl.galajus.brokenpediabackend.admin.gameentities.model.AdminMonsterType;
@@ -15,6 +17,7 @@ import java.util.List;
 public class AdminMonsterService {
 
     private final AdminMonsterRepository adminMonsterRepository;
+    private final CacheManager cacheManager;
 
     public List<AdminMonster> getAll() {
         return adminMonsterRepository.findAll();
@@ -29,11 +32,15 @@ public class AdminMonsterService {
     }
 
     public AdminMonster createMonster(AdminMonster adminMonster) {
-        return adminMonsterRepository.save(adminMonster);
+        AdminMonster monster = adminMonsterRepository.save(adminMonster);
+        this.clearChangedCaches();
+        return monster;
     }
 
     public AdminMonster updateMonster(AdminMonster adminMonster) {
-        return adminMonsterRepository.save(adminMonster);
+        AdminMonster monster = adminMonsterRepository.save(adminMonster);
+        this.clearChangedCaches();
+        return monster;
     }
 
     @Transactional
@@ -41,5 +48,13 @@ public class AdminMonsterService {
         AdminMonster adminMonster = adminMonsterRepository.findByIdWithLegendaryDrops(id).orElseThrow();
         adminMonster.removeLegendaryDrops();
         adminMonsterRepository.delete(adminMonster);
+        this.clearChangedCaches();
+    }
+
+    private void clearChangedCaches() {
+        Cache monstersWithRars = cacheManager.getCache("MonstersWithRars");
+        if (monstersWithRars != null) {
+            monstersWithRars.clear();
+        }
     }
 }
