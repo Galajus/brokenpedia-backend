@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.galajus.brokenpediabackend.user.items.legendary.controller.mapper.LegendaryItemMapper;
+import pl.galajus.brokenpediabackend.user.items.legendary.model.EpicDedicatedMod;
 import pl.galajus.brokenpediabackend.user.items.legendary.model.ItemFamily;
 import pl.galajus.brokenpediabackend.user.items.legendary.model.ItemType;
 import pl.galajus.brokenpediabackend.user.items.legendary.model.LegendaryItem;
 import pl.galajus.brokenpediabackend.user.items.legendary.model.dto.LegendaryItemDto;
+import pl.galajus.brokenpediabackend.user.items.legendary.service.EpicDedicatedModService;
 import pl.galajus.brokenpediabackend.user.items.legendary.service.LegendaryItemService;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
 public class LegendaryItemController {
 
     private final LegendaryItemService legendaryItemService;
+    private final EpicDedicatedModService epicDedicatedModService;
 
     @GetMapping
     public List<LegendaryItemDto> getAll() {
@@ -42,6 +45,11 @@ public class LegendaryItemController {
     @GetMapping("/id/{id}")
     public LegendaryItem getById(@PathVariable Long id) {
         return legendaryItemService.getById(id);
+    }
+
+    @GetMapping("/epics-mods")
+    public List<EpicDedicatedMod> getEpicsDedicatedMods() {
+        return epicDedicatedModService.getAll();
     }
 
 }
