@@ -10,7 +10,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import pl.galajus.brokenpediabackend.user.category.model.Category;
-import pl.galajus.brokenpediabackend.user.common.model.PublicProfile;
+import pl.galajus.brokenpediabackend.user.profile.model.PublicProfile;
 
 import java.time.LocalDateTime;
 import java.util.List;

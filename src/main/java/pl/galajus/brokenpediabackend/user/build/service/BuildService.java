@@ -17,7 +17,7 @@ import pl.galajus.brokenpediabackend.user.build.model.dto.PageableBuildListDto;
 import pl.galajus.brokenpediabackend.user.build.repository.BuildLikerRepository;
 import pl.galajus.brokenpediabackend.user.build.repository.BuildRepository;
 import pl.galajus.brokenpediabackend.user.common.model.Profession;
-import pl.galajus.brokenpediabackend.user.common.service.SanitizeService;
+import pl.galajus.brokenpediabackend.user.common.utils.SanitizeUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -128,8 +128,8 @@ public class BuildService {
     }
 
     private void sanitizeBuild(Build build) {
-        build.setBuildName(SanitizeService.cleanCompletely(build.getBuildName()));
-        build.setShortDescription(SanitizeService.cleanCompletely(build.getShortDescription()));
-        build.setDescription(SanitizeService.cleanRelaxed(build.getDescription()));
+        build.setBuildName(SanitizeUtils.cleanCompletely(build.getBuildName()));
+        build.setShortDescription(SanitizeUtils.cleanCompletely(build.getShortDescription()));
+        build.setDescription(SanitizeUtils.cleanRelaxed(build.getDescription()));
     }
 }

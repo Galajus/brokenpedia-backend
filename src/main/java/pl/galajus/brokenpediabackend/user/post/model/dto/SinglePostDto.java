@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import pl.galajus.brokenpediabackend.user.category.model.dto.CategoryDto;
-import pl.galajus.brokenpediabackend.user.common.model.PublicProfile;
+import pl.galajus.brokenpediabackend.user.profile.model.PublicProfile;
 
 import java.time.LocalDateTime;
 import java.util.List;

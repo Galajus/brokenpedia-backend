@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import pl.galajus.brokenpediabackend.admin.category.model.AdminCategory;
-import pl.galajus.brokenpediabackend.user.common.model.PublicProfile;
+import pl.galajus.brokenpediabackend.user.profile.model.PublicProfile;
 
 import java.time.LocalDateTime;
 import java.util.List;

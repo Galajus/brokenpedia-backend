@@ -4,8 +4,8 @@ import pl.galajus.brokenpediabackend.admin.category.model.AdminCategory;
 import pl.galajus.brokenpediabackend.admin.category.model.dto.AdminCategoryDto;
 import pl.galajus.brokenpediabackend.admin.post.model.AdminPost;
 import pl.galajus.brokenpediabackend.admin.post.model.dto.ListAdminPostDto;
-import pl.galajus.brokenpediabackend.user.common.model.PublicProfile;
-import pl.galajus.brokenpediabackend.user.common.model.dto.PublicProfileDto;
+import pl.galajus.brokenpediabackend.user.profile.model.PublicProfile;
+import pl.galajus.brokenpediabackend.user.profile.model.dto.PublicProfileDto;
 
 import java.util.List;
 

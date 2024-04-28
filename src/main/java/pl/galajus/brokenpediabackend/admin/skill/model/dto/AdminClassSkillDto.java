@@ -3,7 +3,7 @@ package pl.galajus.brokenpediabackend.admin.skill.model.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import pl.galajus.brokenpediabackend.user.common.model.Profession;
+import pl.galajus.brokenpediabackend.admin.common.model.AdminProfession;
 
 @Getter
 @Setter
@@ -19,6 +19,6 @@ public class AdminClassSkillDto {
     private String requirements;
     private String formula;
     private String image;
-    private Profession profession;
+    private AdminProfession profession;
 
 }

@@ -1,4 +1,4 @@
-package pl.galajus.brokenpediabackend.user.common.model.dto;
+package pl.galajus.brokenpediabackend.user.profile.model.dto;
 
 import lombok.Builder;
 import lombok.Getter;

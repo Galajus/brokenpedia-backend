@@ -19,6 +19,6 @@ public class MonsterDto {
     private Long id;
     private String name;
     private MonsterType type;
-    private List<LegendaryItemDto> legendaryDrops; //todo: move to common legendary items dto?
+    private List<LegendaryItemDto> legendaryDrops;
     private Integer level;
 }

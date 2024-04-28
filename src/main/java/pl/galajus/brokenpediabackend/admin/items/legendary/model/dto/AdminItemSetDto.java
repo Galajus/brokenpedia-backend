@@ -5,9 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.galajus.brokenpediabackend.admin.common.model.AdminProfession;
 import pl.galajus.brokenpediabackend.admin.items.legendary.model.AdminItemSetCustomEffect;
 import pl.galajus.brokenpediabackend.admin.items.legendary.model.AdminItemSetPsychoEffect;
-import pl.galajus.brokenpediabackend.user.common.model.Profession;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class AdminItemSetDto {
 
     private Long id;
     private String name;
-    private Profession requiredClass;
+    private AdminProfession requiredClass;
     private List<AdminItemSetPsychoEffect> psychoEffects;
     private List<AdminItemSetCustomEffect> customEffects;
 }

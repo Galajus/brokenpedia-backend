@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.galajus.brokenpediabackend.user.common.model.Profession;
+import pl.galajus.brokenpediabackend.admin.common.model.AdminProfession;
 
 @Getter
 @Setter
@@ -16,6 +16,6 @@ public class AdminItemSetAloneDto {
 
     private Long id;
     private String name;
-    private Profession requiredClass;
+    private AdminProfession requiredClass;
 
 }

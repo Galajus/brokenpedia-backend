@@ -2,8 +2,8 @@ package pl.galajus.brokenpediabackend.user.post.service.mapper;
 
 import pl.galajus.brokenpediabackend.user.category.model.Category;
 import pl.galajus.brokenpediabackend.user.category.model.dto.CategoryDto;
-import pl.galajus.brokenpediabackend.user.common.model.PublicProfile;
-import pl.galajus.brokenpediabackend.user.common.model.dto.PublicProfileDto;
+import pl.galajus.brokenpediabackend.user.profile.model.PublicProfile;
+import pl.galajus.brokenpediabackend.user.profile.model.dto.PublicProfileDto;
 import pl.galajus.brokenpediabackend.user.post.model.FrontPost;
 import pl.galajus.brokenpediabackend.user.post.model.Post;
 import pl.galajus.brokenpediabackend.user.post.model.dto.MainPagePostDto;

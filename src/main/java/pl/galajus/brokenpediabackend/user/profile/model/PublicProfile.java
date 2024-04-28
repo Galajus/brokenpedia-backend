@@ -1,4 +1,4 @@
-package pl.galajus.brokenpediabackend.user.common.model;
+package pl.galajus.brokenpediabackend.user.profile.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

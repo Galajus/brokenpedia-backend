@@ -15,7 +15,7 @@ import pl.galajus.brokenpediabackend.user.skill.service.ClassSkillService;
 import pl.galajus.brokenpediabackend.user.skill.service.DefaultStatisticService;
 import pl.galajus.brokenpediabackend.user.skill.service.SkillCostService;
 
-@RestController
+@RestController("/builds")
 @RequiredArgsConstructor
 public class BuildCalculatorController {
 
@@ -24,7 +24,7 @@ public class BuildCalculatorController {
     private final SkillCostService skillCostService;
     private final BuildService buildService;
 
-    @GetMapping("/builds/initData")
+    @GetMapping("/initData")
     public InitBuildCalculator getInitData() {
         return InitBuildCalculator.builder()
                 .classSkills(classSkillService.getAllWithBasicsAndEffects())
@@ -33,7 +33,7 @@ public class BuildCalculatorController {
                 .build();
     }
 
-    @GetMapping("/builds/{id}")
+    @GetMapping("/{id}")
     public Build getBuildByIdWithoutAccount(@PathVariable Long id) {
         Build build = buildService.getBuildById(id);
         if (build.getHidden()) {
@@ -42,23 +42,21 @@ public class BuildCalculatorController {
         return build;
     }
 
-
-
-    @GetMapping("/builds/by-profession")
+    @GetMapping("/by-profession")
     public PageableBuildListDto getBuildsByProfession(
             @RequestParam Profession profession,
             @RequestParam(required = false, defaultValue = "0") Long page) {
         return buildService.getBuildsByProfession(profession, page);
     }
 
-    @GetMapping("/builds/by-level")
+    @GetMapping("/by-level")
     public PageableBuildListDto getBuildsBetweenLevels(@RequestParam(required = false, defaultValue = "200") Integer less,
                                                        @RequestParam(required = false, defaultValue = "0") Integer greater,
                                                        @RequestParam(required = false, defaultValue = "0") Long page) {
         return buildService.getBuildsByLevels(less, greater, page);
     }
 
-    @GetMapping("/builds/by-pvp")
+    @GetMapping("/by-pvp")
     public PageableBuildListDto getBuildsByIsPvp(
             @RequestParam Boolean pvp,
             @RequestParam(required = false, defaultValue = "0") Long page) {

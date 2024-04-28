@@ -1,4 +1,4 @@
-package pl.galajus.brokenpediabackend.user.common.controller;
+package pl.galajus.brokenpediabackend.user.build.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import pl.galajus.brokenpediabackend.user.security.model.UserRole;
 import java.security.Principal;
 import java.util.List;
 
-@RestController
+@RestController("/profile/builds")
 @RequiredArgsConstructor
 public class ProfileBuildController {
 
@@ -32,16 +32,16 @@ public class ProfileBuildController {
     private final BuildLikerService buildLikerService;
     private final BuildValidationService buildValidationService;
 
-    @GetMapping("/profile/builds/{id}")
-    public Build getBuildById(@PathVariable Long id, Principal principal) {
-        Build build = buildService.getBuildById(id);
+    @GetMapping("/{profileBuildId}")
+    public Build getBuildById(@PathVariable Long profileBuildId, Principal principal) {
+        Build build = buildService.getBuildById(profileBuildId);
         if (build.getHidden() && !build.getProfile().getUuid().toString().equals(principal.getName())) {
             throw new BuildValidationException("HIDDEN BUILD ACCESS DENIED");
         }
         return build;
     }
 
-    @PostMapping("/profile/builds")
+    @PostMapping
     public Build createBuild(@RequestBody @Valid Build build, Principal principal) {
         if (!build.getProfile().getUuid().toString().equals(principal.getName())) {
             throw new BuildValidationException("INVALID BUILD AUTHOR");
@@ -56,7 +56,7 @@ public class ProfileBuildController {
         return buildService.create(build);
     }
 
-    @PutMapping("/profile/builds")
+    @PutMapping
     public Build updateBuild(@RequestBody @Valid Build newBuild, Principal principal) {
         Build oldBuild = buildService.getBuildById(newBuild.getId());
         if (!oldBuild.getProfile().getUuid().toString().equals(principal.getName())) {
@@ -68,7 +68,7 @@ public class ProfileBuildController {
         return buildService.update(newBuild, oldBuild);
     }
 
-    @DeleteMapping("/profile/builds/{id}")
+    @DeleteMapping("/{id}")
     public void deleteBuild(@PathVariable Long id, Principal principal) {
         Build build = buildService.getBuildByIdWithAuthor(id);
         if (!build.getProfile().getUuid().toString().equals(principal.getName())) {
@@ -81,13 +81,12 @@ public class ProfileBuildController {
         buildService.deleteBuildById(id);
     }
 
-    @GetMapping("/profile/builds/builds-list")
+    @GetMapping("/builds-list")
     public List<BuildListDto> getUserBuilds(Principal principal) {
         return buildService.getBuildsListByUuid(principal.getName());
     }
 
-    //TODO REFACTOR
-    @PutMapping("/profile/builds/add-liker")
+    @PutMapping("/add-liker")
     public BuildLiker addLiker(@RequestBody BuildLiker liker, Principal principal) {
         if (!liker.getLikerUuid().toString().equals(principal.getName())) {
             throw new BuildValidationException("INVALID LIKE AUTHOR");

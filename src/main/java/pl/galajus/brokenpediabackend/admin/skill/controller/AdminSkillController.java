@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.galajus.brokenpediabackend.admin.common.model.AdminProfession;
 import pl.galajus.brokenpediabackend.admin.skill.controller.mapper.AdminSkillMapper;
 import pl.galajus.brokenpediabackend.admin.skill.model.AdminClassSkill;
 import pl.galajus.brokenpediabackend.admin.skill.model.AdminSkillBasic;
@@ -18,7 +19,6 @@ import pl.galajus.brokenpediabackend.admin.skill.service.AdminClassSkillService;
 import pl.galajus.brokenpediabackend.admin.skill.service.AdminSkillBasicService;
 import pl.galajus.brokenpediabackend.admin.skill.service.AdminSkillCustomEffectService;
 import pl.galajus.brokenpediabackend.admin.skill.service.AdminSkillPsychoEffectService;
-import pl.galajus.brokenpediabackend.user.common.model.Profession;
 import pl.galajus.brokenpediabackend.user.common.model.PsychoEffect;
 
 import java.util.Arrays;
@@ -80,8 +80,8 @@ public class AdminSkillController {
     }
 
     @GetMapping("/professions")
-    public List<Profession> getProfessions() {
-        return Arrays.stream(Profession.values()).toList();
+    public List<AdminProfession> getProfessions() {
+        return Arrays.stream(AdminProfession.values()).toList();
     }
     @GetMapping("/difficulties")
     public List<AdminSkillDifficulty> getDifficulties() {

@@ -14,7 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.galajus.brokenpediabackend.user.common.model.Profession;
+import pl.galajus.brokenpediabackend.admin.common.model.AdminProfession;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class AdminClassSkill {
     private String formula;
     private String image;
     @Enumerated(value = EnumType.STRING)
-    private Profession profession;
+    private AdminProfession profession;
     @OneToMany
     @JoinColumn(name = "classSkillId", insertable = false, updatable = false)
     List<AdminSkillBasic> adminSkillBasics;

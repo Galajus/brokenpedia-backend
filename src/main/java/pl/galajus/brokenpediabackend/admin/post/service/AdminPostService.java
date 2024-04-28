@@ -15,7 +15,7 @@ import pl.galajus.brokenpediabackend.admin.post.model.dto.ListAdminPostDto;
 import pl.galajus.brokenpediabackend.admin.post.model.dto.PageablePageAdminPostDto;
 import pl.galajus.brokenpediabackend.admin.post.repostitory.AdminPostRepository;
 import pl.galajus.brokenpediabackend.admin.post.service.mapper.AdminPostsWithCategoryMapper;
-import pl.galajus.brokenpediabackend.user.common.model.PublicProfile;
+import pl.galajus.brokenpediabackend.user.profile.model.PublicProfile;
 import pl.galajus.brokenpediabackend.user.profile.model.Profile;
 import pl.galajus.brokenpediabackend.user.profile.service.ProfileService;
 

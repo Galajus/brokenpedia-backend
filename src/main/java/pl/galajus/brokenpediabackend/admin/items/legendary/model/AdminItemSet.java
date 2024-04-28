@@ -12,7 +12,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import pl.galajus.brokenpediabackend.user.common.model.Profession;
+import pl.galajus.brokenpediabackend.admin.common.model.AdminProfession;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class AdminItemSet {
     private Long id;
     private String name;
     @Enumerated(value = EnumType.STRING)
-    private Profession requiredClass;
+    private AdminProfession requiredClass;
     @OneToMany(mappedBy = "itemSet")
     private List<AdminLegendaryItem> setLegendaryItems;
     @OneToMany(cascade = CascadeType.ALL)

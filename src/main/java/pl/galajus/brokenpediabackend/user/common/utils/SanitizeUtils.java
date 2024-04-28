@@ -1,11 +1,11 @@
-package pl.galajus.brokenpediabackend.user.common.service;
+package pl.galajus.brokenpediabackend.user.common.utils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Safelist;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SanitizeService {
+public class SanitizeUtils {
 
     public static String cleanCompletely(String content) {
         if (content == null) {
