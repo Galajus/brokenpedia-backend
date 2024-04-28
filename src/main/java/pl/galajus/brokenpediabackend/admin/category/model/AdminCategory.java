@@ -1,12 +1,12 @@
 package pl.galajus.brokenpediabackend.admin.category.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PreRemove;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,13 +31,11 @@ public class AdminCategory {
     private Long id;
     private String categoryName;
     private String categorySlug;
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    }, mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories")
     @JsonIgnore
     private List<AdminPost> posts;
 
+    @PreRemove
     public void removeAdminPosts() {
         this.posts.forEach(p -> p.removeCategory(this));
         this.posts.clear();

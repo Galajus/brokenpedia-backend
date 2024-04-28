@@ -39,10 +39,10 @@ public class AdminCategoryService {
         return adminCategoryRepository.findAllByIdIn(categoriesIds);
     }
 
-    @Transactional //todo: optimise deleting
+    @Transactional
     public void deleteCategory(Long id) {
         AdminCategory adminCategory = adminCategoryRepository.findById(id).orElseThrow();
-        adminCategory.removeAdminPosts();
+        adminCategoryRepository.deleteCategoryFromPosts(id);
         adminCategoryRepository.delete(adminCategory);
     }
 
