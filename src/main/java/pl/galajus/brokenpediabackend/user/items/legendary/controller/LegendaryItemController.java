@@ -9,7 +9,6 @@ import pl.galajus.brokenpediabackend.user.items.legendary.controller.mapper.Lege
 import pl.galajus.brokenpediabackend.user.items.legendary.model.EpicDedicatedMod;
 import pl.galajus.brokenpediabackend.user.items.legendary.model.ItemFamily;
 import pl.galajus.brokenpediabackend.user.items.legendary.model.ItemType;
-import pl.galajus.brokenpediabackend.user.items.legendary.model.LegendaryItem;
 import pl.galajus.brokenpediabackend.user.items.legendary.model.dto.LegendaryItemDto;
 import pl.galajus.brokenpediabackend.user.items.legendary.service.EpicDedicatedModService;
 import pl.galajus.brokenpediabackend.user.items.legendary.service.LegendaryItemService;
@@ -43,8 +42,8 @@ public class LegendaryItemController {
     }
 
     @GetMapping("/id/{id}")
-    public LegendaryItem getById(@PathVariable Long id) {
-        return legendaryItemService.getById(id);
+    public LegendaryItemDto getById(@PathVariable Long id) {
+        return LegendaryItemMapper.mapLegendaryItemToLegendaryItemDto(legendaryItemService.getById(id));
     }
 
     @GetMapping("/epics-mods")

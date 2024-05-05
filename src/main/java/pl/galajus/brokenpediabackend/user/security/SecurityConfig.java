@@ -1,10 +1,9 @@
 package pl.galajus.brokenpediabackend.user.security;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,15 +11,19 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import pl.galajus.brokenpediabackend.user.security.model.UserRole;
 
 @Configuration
-@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    private final String secret;
+    private final HandlerExceptionResolver exceptionResolver;
 
+    public SecurityConfig(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver exceptionResolver, @Value("${jwt.secret}") String secret) {
+        this.exceptionResolver = exceptionResolver;
+        this.secret = secret;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
@@ -28,7 +31,7 @@ public class SecurityConfig {
                                            UserDetailsService userDetailsService) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/admin/**").hasRole(UserRole.ROLE_ADMIN.getRole())
-                .requestMatchers(HttpMethod.GET, "/profile/**").authenticated()
+                .requestMatchers("/profile/**").authenticated()
                 .anyRequest().permitAll());
 
         http.csrf(AbstractHttpConfigurer::disable);
@@ -37,7 +40,8 @@ public class SecurityConfig {
                 new JwtAuthorizationFilter(
                         authenticationManager,
                         (PediaUserDetailsService) userDetailsService,
-                        secret)
+                        secret,
+                        exceptionResolver)
         );
         return http.build();
     }
