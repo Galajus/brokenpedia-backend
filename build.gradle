@@ -39,6 +39,10 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }

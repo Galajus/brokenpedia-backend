@@ -8,6 +8,8 @@ public class SlugifyUtils {
         String name = FilenameUtils.getBaseName(fileName);
         Slugify slg = Slugify.builder()
                 .customReplacement("_", "-")
+                .customReplacement("ł", "l")
+                .customReplacement("Ł", "l")
                 .build();
         String changedName = slg.slugify(name);
         return changedName + "." + FilenameUtils.getExtension(fileName);
@@ -16,6 +18,8 @@ public class SlugifyUtils {
     public static String slugifySlug(String slug) {
         Slugify slg = Slugify.builder()
                 .customReplacement("_", "-")
+                .customReplacement("ł", "l")
+                .customReplacement("Ł", "l")
                 .build();
         return slg.slugify(slug);
     }
