@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.galajus.brokenpediabackend.user.build.exception.BuildValidationException;
@@ -12,6 +13,7 @@ import pl.galajus.brokenpediabackend.user.build.model.Build;
 import pl.galajus.brokenpediabackend.user.build.model.BuildDetails;
 import pl.galajus.brokenpediabackend.user.build.model.BuildLiker;
 import pl.galajus.brokenpediabackend.user.build.model.BuildSkillStatData;
+import pl.galajus.brokenpediabackend.user.build.model.BuildSortBy;
 import pl.galajus.brokenpediabackend.user.build.model.dto.BuildListDto;
 import pl.galajus.brokenpediabackend.user.build.model.dto.PageableBuildListDto;
 import pl.galajus.brokenpediabackend.user.build.repository.BuildLikerRepository;
@@ -134,5 +136,32 @@ public class BuildService {
         build.setBuildName(SanitizeUtils.cleanCompletely(build.getBuildName()));
         build.setShortDescription(SanitizeUtils.cleanCompletely(build.getShortDescription()));
         build.setDescription(SanitizeUtils.cleanRelaxed(build.getDescription()));
+    }
+
+    public PageableBuildListDto getBuildsFiltered(Integer levelLess,
+                                                  Integer levelGreater,
+                                                  Boolean isPvp,
+                                                  List<Profession> profession,
+                                                  Long likes, BuildSortBy buildSortBy,
+                                                  Sort.Direction sortDirection,
+                                                  Long page) {
+
+        Sort sort = this.getFilteredSorting(sortDirection, buildSortBy);
+        PageRequest pageable = PageRequest.of(Math.toIntExact(page), PAGE_SIZE, sort);
+
+        Page<Build> builds = buildRepository.findByBuildFiltered(levelLess, levelGreater, isPvp, profession, likes, pageable);
+        List<BuildLiker> likers = getLikers(builds.getContent());
+        List<BuildListDto> buildListDtos = mapToBuildListDtoWithLikers(builds.getContent(), likers);
+        return new PageableBuildListDto(new PageImpl<>(buildListDtos, pageable, builds.getTotalElements()));
+    }
+
+    private Sort getFilteredSorting(Sort.Direction sortDirection, BuildSortBy buildSortBy) {
+        String sortLiking = "size(b.liking)";
+        String sortLevel = "buildDetails.level";
+
+        if (buildSortBy == BuildSortBy.LEVEL) {
+            return JpaSort.unsafe(sortDirection, sortLevel).andUnsafe(Sort.Direction.DESC, sortLiking);
+        }
+        return JpaSort.unsafe(Sort.Direction.DESC, sortLiking).andUnsafe(sortDirection, sortLevel);
     }
 }
