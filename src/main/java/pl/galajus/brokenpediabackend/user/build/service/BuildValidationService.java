@@ -27,6 +27,10 @@ public class BuildValidationService {
     public boolean isInValid(Build build) {
         Integer level = build.getBuildDetails().getLevel();
 
+        if (level < 1 || level > 140) {
+            throw new BuildValidationException("INVALID BUILD LEVEL");
+        }
+
         checkIfBuildDataLengthIsValid(build);
 
         List<BuildSkillStatData> stats = build.getBuildDetails().getSkillStatData().stream()
@@ -77,7 +81,12 @@ public class BuildValidationService {
 
     private boolean spentStatsIsInvalid(int level, List<BuildSkillStatData> stats) {
         Integer levelStatSum = stats.stream()
-                .reduce(0, (partSumLevels, stat) -> partSumLevels + stat.getLevel(), Integer::sum);
+                .reduce(0, (partSumLevels, stat) -> {
+                    if (stat.getLevel()< 10) {
+                        throw new BuildValidationException("STAT LEVEL INVALID"); //TODO: MISSING HP/MANA/STAMINA 20 CHECK
+                    }
+                    return partSumLevels + stat.getLevel();
+                    }, Integer::sum);
         levelStatSum -= DEFAULT_STAT_SUM;
         int maxStatAvailable = level * STATS_BY_LEVEL + 1;
         return (maxStatAvailable - levelStatSum) < 0;
@@ -118,6 +127,6 @@ public class BuildValidationService {
         return (int) (level * (((double)level + 1) / 2)) - 1;
     }
 
-    //TODO: Validation beginLevel and build level and max available skillLevel
+    //TODO: max available skillLevel (based on player lvl)
 
 }

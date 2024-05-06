@@ -35,6 +35,9 @@ public class BuildService {
     private static final Integer PAGE_SIZE = 25;
 
     public Build create(Build build) {
+        if (build.getId() != null && build.getId() != 0) {
+            throw new BuildValidationException("CANT OVERRIDE EXISTING BUILD ON CREATE");
+        }
         this.sanitizeBuild(build);
         build.getLiking().clear();
         return buildRepository.save(build);
