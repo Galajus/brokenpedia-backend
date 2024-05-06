@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.galajus.brokenpediabackend.user.build.exception.BuildValidationException;
 import pl.galajus.brokenpediabackend.user.build.model.Build;
@@ -23,7 +24,8 @@ import pl.galajus.brokenpediabackend.user.security.model.UserRole;
 import java.security.Principal;
 import java.util.List;
 
-@RestController("/profile/builds")
+@RestController
+@RequestMapping("/profile/builds")
 @RequiredArgsConstructor
 public class ProfileBuildController {
 
@@ -32,9 +34,9 @@ public class ProfileBuildController {
     private final BuildLikerService buildLikerService;
     private final BuildValidationService buildValidationService;
 
-    @GetMapping("/{profileBuildId}")
-    public Build getBuildById(@PathVariable Long profileBuildId, Principal principal) {
-        Build build = buildService.getBuildById(profileBuildId);
+    @GetMapping("/{id}")
+    public Build getBuildById(@PathVariable Long id, Principal principal) {
+        Build build = buildService.getBuildById(id);
         if (build.getHidden() && !build.getProfile().getUuid().toString().equals(principal.getName())) {
             throw new BuildValidationException("HIDDEN BUILD ACCESS DENIED");
         }

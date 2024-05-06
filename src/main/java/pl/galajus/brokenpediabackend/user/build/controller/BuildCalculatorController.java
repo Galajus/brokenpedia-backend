@@ -3,6 +3,7 @@ package pl.galajus.brokenpediabackend.user.build.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.galajus.brokenpediabackend.user.build.exception.BuildValidationException;
@@ -15,7 +16,8 @@ import pl.galajus.brokenpediabackend.user.skill.service.ClassSkillService;
 import pl.galajus.brokenpediabackend.user.skill.service.DefaultStatisticService;
 import pl.galajus.brokenpediabackend.user.skill.service.SkillCostService;
 
-@RestController("/builds")
+@RestController
+@RequestMapping("/builds")
 @RequiredArgsConstructor
 public class BuildCalculatorController {
 
