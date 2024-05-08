@@ -8,7 +8,7 @@ import pl.galajus.brokenpediabackend.user.build.repository.BuildLikerRepository;
 import pl.galajus.brokenpediabackend.user.build.repository.BuildRepository;
 import pl.galajus.brokenpediabackend.user.profile.service.ProfileService;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,16 +22,14 @@ public class BuildLikerService {
         profileService.getProfile(buildLiker.getLikerUuid().toString()); //USER EXIST CHECK
         buildRepository.findById(buildLiker.getBuildId()) //BUILD EXIST CHECK
                 .orElseThrow(() -> new BuildValidationException("LIKED BUILD NOT EXIST"));
-        buildLikerRepository.findByBuildIdAndLikerUuid(buildLiker.getBuildId(), buildLiker.getLikerUuid())
-                .ifPresent(like -> {
-            throw new BuildValidationException("LIKE EXIST");
-        });
+        Optional<BuildLiker> like = buildLikerRepository.findByBuildIdAndLikerUuid(buildLiker.getBuildId(), buildLiker.getLikerUuid());
 
-        return buildLikerRepository.save(buildLiker);
-    }
-
-    public List<BuildLiker> findByBuildsByIds(List<Long> ids) {
-        return buildLikerRepository.findByBuildIdIn(ids);
+        if (like.isPresent()) {
+            buildLikerRepository.delete(like.get());
+            return null;
+        } else {
+            return buildLikerRepository.save(buildLiker);
+        }
     }
 
 }

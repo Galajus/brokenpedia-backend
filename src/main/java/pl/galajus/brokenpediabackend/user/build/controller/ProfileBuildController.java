@@ -2,6 +2,7 @@ package pl.galajus.brokenpediabackend.user.build.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,14 +10,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.galajus.brokenpediabackend.user.build.exception.BuildValidationException;
 import pl.galajus.brokenpediabackend.user.build.model.Build;
 import pl.galajus.brokenpediabackend.user.build.model.BuildLiker;
+import pl.galajus.brokenpediabackend.user.build.model.BuildSortBy;
 import pl.galajus.brokenpediabackend.user.build.model.dto.BuildListDto;
+import pl.galajus.brokenpediabackend.user.build.model.dto.PageableBuildListDto;
 import pl.galajus.brokenpediabackend.user.build.service.BuildLikerService;
 import pl.galajus.brokenpediabackend.user.build.service.BuildService;
 import pl.galajus.brokenpediabackend.user.build.service.BuildValidationService;
+import pl.galajus.brokenpediabackend.user.common.model.Profession;
 import pl.galajus.brokenpediabackend.user.profile.model.Profile;
 import pl.galajus.brokenpediabackend.user.profile.service.ProfileService;
 import pl.galajus.brokenpediabackend.user.security.model.UserRole;
@@ -94,6 +99,32 @@ public class ProfileBuildController {
             throw new BuildValidationException("INVALID LIKE AUTHOR");
         }
         return buildLikerService.addLike(liker);
+    }
+
+    @GetMapping("/filtered")
+    public PageableBuildListDto getProfileBuildsFiltered(@RequestParam(required = false, defaultValue = "140") Integer levelLess,
+                                                         @RequestParam(required = false, defaultValue = "0") Integer levelGreater,
+                                                         @RequestParam(required = false, defaultValue = "false") Boolean isPvp,
+                                                         @RequestParam(required = false, defaultValue = "FIRE_MAGE, BARBARIAN, VOODOO, ARCHER, SHEED, KNIGHT, DRUID") List<Profession> profession,
+                                                         @RequestParam(required = false, defaultValue = "0") Long likes,
+                                                         @RequestParam(required = false, defaultValue = "LEVEL") BuildSortBy sorting,
+                                                         @RequestParam(required = false, defaultValue = "DESC") Sort.Direction sortDirection,
+                                                         @RequestParam(required = false, defaultValue = "0") Long page,
+                                                         Principal principal) {
+        return buildService.getProfileBuildsFiltered(levelLess, levelGreater, isPvp, profession, likes, sorting, sortDirection, principal, page);
+    }
+
+    @GetMapping("/liked")
+    public PageableBuildListDto getProfileLikedBuildsFiltered(@RequestParam(required = false, defaultValue = "140") Integer levelLess,
+                                                         @RequestParam(required = false, defaultValue = "0") Integer levelGreater,
+                                                         @RequestParam(required = false, defaultValue = "false") Boolean isPvp,
+                                                         @RequestParam(required = false, defaultValue = "FIRE_MAGE, BARBARIAN, VOODOO, ARCHER, SHEED, KNIGHT, DRUID") List<Profession> profession,
+                                                         @RequestParam(required = false, defaultValue = "0") Long likes,
+                                                         @RequestParam(required = false, defaultValue = "LEVEL") BuildSortBy sorting,
+                                                         @RequestParam(required = false, defaultValue = "DESC") Sort.Direction sortDirection,
+                                                         @RequestParam(required = false, defaultValue = "0") Long page,
+                                                         Principal principal) {
+        return buildService.getProfileLikedBuildsFiltered(levelLess, levelGreater, isPvp, profession, likes, sorting, sortDirection, principal, page);
     }
 
 }

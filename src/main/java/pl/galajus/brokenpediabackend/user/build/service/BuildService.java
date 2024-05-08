@@ -21,6 +21,7 @@ import pl.galajus.brokenpediabackend.user.build.repository.BuildRepository;
 import pl.galajus.brokenpediabackend.user.common.model.Profession;
 import pl.galajus.brokenpediabackend.user.common.utils.SanitizeUtils;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -102,7 +103,7 @@ public class BuildService {
     public PageableBuildListDto getBuildsByProfession(Profession profession, Long page) {
         PageRequest pageable = PageRequest.of(Math.toIntExact(page), PAGE_SIZE, Sort.by(Sort.Direction.DESC, "buildDetails.level"));
         Page<Build> builds = buildRepository.findByBuildDetailsProfession(profession, pageable);
-        List<BuildLiker> likers = getLikers(builds.getContent());
+        List<BuildLiker> likers = mapLikers(builds.getContent());
         List<BuildListDto> buildListDtos = mapToBuildListDtoWithLikers(builds.getContent(), likers);
         return new PageableBuildListDto(new PageImpl<>(buildListDtos, pageable, builds.getTotalElements()));
     }
@@ -111,7 +112,7 @@ public class BuildService {
     public PageableBuildListDto getBuildsByLevels(Integer less, Integer greater, Long page) {
         PageRequest pageable = PageRequest.of(Math.toIntExact(page), PAGE_SIZE, Sort.by(Sort.Direction.DESC, "buildDetails.level"));
         Page<Build> builds = buildRepository.findByBuildDetailsLevelIsLessThanEqualAndBuildDetailsLevelGreaterThanEqual(less, greater, pageable);
-        List<BuildLiker> likers = getLikers(builds.getContent());
+        List<BuildLiker> likers = mapLikers(builds.getContent());
         List<BuildListDto> buildListDtos = mapToBuildListDtoWithLikers(builds.getContent(), likers);
         return new PageableBuildListDto(new PageImpl<>(buildListDtos, pageable, builds.getTotalElements()));
     }
@@ -120,12 +121,12 @@ public class BuildService {
     public PageableBuildListDto getBuildsByIsPvp(Boolean isPvp, Long page) {
         PageRequest pageable = PageRequest.of(Math.toIntExact(page), PAGE_SIZE, Sort.by(Sort.Direction.DESC, "buildDetails.level"));
         Page<Build> builds = buildRepository.findByPvpBuild(isPvp, pageable);
-        List<BuildLiker> likers = getLikers(builds.getContent());
+        List<BuildLiker> likers = mapLikers(builds.getContent());
         List<BuildListDto> buildListDtos = mapToBuildListDtoWithLikers(builds.getContent(), likers);
         return new PageableBuildListDto(new PageImpl<>(buildListDtos, pageable, builds.getTotalElements()));
     }
 
-    private List<BuildLiker> getLikers(List<Build> builds) {
+    private List<BuildLiker> mapLikers(List<Build> builds) {
         List<Long> ids = builds.stream().mapToLong(Build::getId)
                 .boxed()
                 .toList();
@@ -146,22 +147,59 @@ public class BuildService {
                                                   Sort.Direction sortDirection,
                                                   Long page) {
 
-        Sort sort = this.getFilteredSorting(sortDirection, buildSortBy);
-        PageRequest pageable = PageRequest.of(Math.toIntExact(page), PAGE_SIZE, sort);
+        PageRequest pageable = this.getSortedPageRequest(sortDirection, buildSortBy, page);
 
         Page<Build> builds = buildRepository.findByBuildFiltered(levelLess, levelGreater, isPvp, profession, likes, pageable);
-        List<BuildLiker> likers = getLikers(builds.getContent());
-        List<BuildListDto> buildListDtos = mapToBuildListDtoWithLikers(builds.getContent(), likers);
+        List<BuildListDto> buildListDtos = this.mapLikers(builds);
         return new PageableBuildListDto(new PageImpl<>(buildListDtos, pageable, builds.getTotalElements()));
     }
 
-    private Sort getFilteredSorting(Sort.Direction sortDirection, BuildSortBy buildSortBy) {
+    public PageableBuildListDto getProfileBuildsFiltered(Integer levelLess,
+                                                  Integer levelGreater,
+                                                  Boolean isPvp,
+                                                  List<Profession> profession,
+                                                  Long likes, BuildSortBy buildSortBy,
+                                                  Sort.Direction sortDirection,
+                                                  Principal principal,
+                                                  Long page) {
+
+        PageRequest pageable = this.getSortedPageRequest(sortDirection, buildSortBy, page);
+
+        Page<Build> builds = buildRepository.findByProfileBuildFiltered(levelLess, levelGreater, isPvp, profession, likes, UUID.fromString(principal.getName()), pageable);
+        List<BuildListDto> buildListDtos = this.mapLikers(builds);
+        return new PageableBuildListDto(new PageImpl<>(buildListDtos, pageable, builds.getTotalElements()));
+    }
+
+    public PageableBuildListDto getProfileLikedBuildsFiltered(Integer levelLess,
+                                                         Integer levelGreater,
+                                                         Boolean isPvp,
+                                                         List<Profession> profession,
+                                                         Long likes, BuildSortBy buildSortBy,
+                                                         Sort.Direction sortDirection,
+                                                         Principal principal,
+                                                         Long page) {
+
+        PageRequest pageable = this.getSortedPageRequest(sortDirection, buildSortBy, page);
+
+        Page<Build> builds = buildRepository.findByProfileLikedBuildFiltered(levelLess, levelGreater, isPvp, profession, likes, UUID.fromString(principal.getName()), pageable);
+        List<BuildListDto> buildListDtos = this.mapLikers(builds);
+        return new PageableBuildListDto(new PageImpl<>(buildListDtos, pageable, builds.getTotalElements()));
+    }
+
+    private List<BuildListDto> mapLikers(Page<Build> builds) {
+        List<BuildLiker> likers = mapLikers(builds.getContent());
+        return mapToBuildListDtoWithLikers(builds.getContent(), likers);
+    }
+
+    private PageRequest getSortedPageRequest(Sort.Direction sortDirection, BuildSortBy buildSortBy, Long page) {
         String sortLiking = "size(b.liking)";
         String sortLevel = "buildDetails.level";
-
+        Sort sort;
         if (buildSortBy == BuildSortBy.LEVEL) {
-            return JpaSort.unsafe(sortDirection, sortLevel).andUnsafe(Sort.Direction.DESC, sortLiking);
+            sort = JpaSort.unsafe(sortDirection, sortLevel).andUnsafe(Sort.Direction.DESC, sortLiking);
+        } else {
+            sort = JpaSort.unsafe(Sort.Direction.DESC, sortLiking).andUnsafe(sortDirection, sortLevel);
         }
-        return JpaSort.unsafe(Sort.Direction.DESC, sortLiking).andUnsafe(sortDirection, sortLevel);
+        return PageRequest.of(Math.toIntExact(page), PAGE_SIZE, sort);
     }
 }

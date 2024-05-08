@@ -29,13 +29,6 @@ public interface BuildRepository extends JpaRepository<Build, Long> {
             "where b.id = ?1")
     Optional<Build> findByIdWithAuthor(Long id);
 
-    Page<Build> findByPvpBuildIsTrue(Pageable pageable);
-
-    /* jawny join upraszczający duże zapytania
-    @Query(
-            value = "select b from Build b join b.buildDetails bd join fetch b.buildDetails fbd where bd.profession = ?1",
-            countQuery = "select count (b) from Build b join b.buildDetails bd where bd.profession = ?1"
-    )*/
     @Query(
             value = "select b from Build b " +
                     "join fetch b.buildDetails bd " +
@@ -85,17 +78,53 @@ public interface BuildRepository extends JpaRepository<Build, Long> {
     )
     Page<Build> findByBuildFiltered(Integer levelLess, Integer levelGreater, Boolean isPvp, List<Profession> profession, Long likes, Pageable pageable);
 
+    @Query(
+            value = "select b from Build b " +
+                    "join fetch b.buildDetails " +
+                    "join fetch b.profile " +
+                    "where b.buildDetails.level <= ?1 and " +
+                    "b.buildDetails.level >= ?2 and " +
+                    "b.pvpBuild = ?3 and " +
+                    "b.buildDetails.profession in ?4 and " +
+                    "size(b.liking) >= ?5 and " +
+                    "b.profile.uuid = ?6",
+            countQuery = "select count (b) from Build b " +
+                    "left join b.buildDetails " +
+                    "left join b.profile " +
+                    "where b.buildDetails.level <= ?1 and " +
+                    "b.buildDetails.level >= ?2 and " +
+                    "b.pvpBuild = ?3 and " +
+                    "b.buildDetails.profession in ?4 and " +
+                    "size(b.liking) >= ?5 and " +
+                    "b.profile.uuid = ?6"
+    )
+    Page<Build> findByProfileBuildFiltered(Integer levelLess, Integer levelGreater, Boolean isPvp, List<Profession> profession, Long likes, UUID authorUuid, Pageable pageable);
+
+    @Query(
+            value = "select b from Build b " +
+                    "join fetch b.buildDetails " +
+                    "join fetch b.profile " +
+                    "join b.liking l " +
+                    "where b.buildDetails.level <= ?1 and " +
+                    "b.buildDetails.level >= ?2 and " +
+                    "b.pvpBuild = ?3 and " +
+                    "b.buildDetails.profession in ?4 and " +
+                    "size(b.liking) >= ?5 and " +
+                    "l.likerUuid = ?6",
+            countQuery = "select count (b) from Build b " +
+                    "left join b.buildDetails " +
+                    "left join b.profile " +
+                    "left join b.liking l " +
+                    "where b.buildDetails.level <= ?1 and " +
+                    "b.buildDetails.level >= ?2 and " +
+                    "b.pvpBuild = ?3 and " +
+                    "b.buildDetails.profession in ?4 and " +
+                    "size(b.liking) >= ?5 and " +
+                    "l.likerUuid = ?6"
+    )
+    Page<Build> findByProfileLikedBuildFiltered(Integer levelLess, Integer levelGreater, Boolean isPvp, List<Profession> profession, Long likes, UUID authorUuid, Pageable pageable);
+
+
     @Query("select count(b) from Build b where b.profile.uuid = ?1")
     Long countByProfileUuid(UUID uuid);
-
-    /* @Query("select new pl.galajus.brokenpediabackend.buildcalculator.model.dto.BuildListDto(" +
-            "b.id, b.buildName, b.shortDescription, b.hidden, b.pvpBuild, sum(count(b.liking) + 1), " +
-            "b.buildDetails.profession, b.buildDetails.level, " +
-            "p.nickname) " +
-            "from Build b " +
-            "join b.buildDetails bd " +
-            "left join b.liking bl " +
-            "join Profile p on p.uuid = ?1 " +
-            "where b.profile.uuid = ?1")
-    List<BuildListDto> findBuildByOwnerUuidAsDto(UUID uuid);*/
 }
