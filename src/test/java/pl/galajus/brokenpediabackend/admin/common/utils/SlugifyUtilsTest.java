@@ -3,7 +3,7 @@ package pl.galajus.brokenpediabackend.admin.common.utils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class SlugifyUtilsTest {
 
@@ -18,7 +18,7 @@ class SlugifyUtilsTest {
     })
     void shouldSlugifyFileName(String in, String out) {
         String fileName = SlugifyUtils.slugifyFileName(in);
-        assertEquals(out, fileName);
+        assertThat(fileName).isEqualTo(out);
     }
 
     @ParameterizedTest
@@ -32,6 +32,6 @@ class SlugifyUtilsTest {
     })
     void shouldSlugifySlug(String in, String out) {
         String slug = SlugifyUtils.slugifySlug(in);
-        assertEquals(out, slug);
+        assertThat(slug).isEqualTo(out);
     }
 }
